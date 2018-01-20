@@ -8,6 +8,7 @@ import {
 
 export default class Card extends Component {
 
+
   render() {
     return (
       <View style={styles.cardBody}>
@@ -15,7 +16,7 @@ export default class Card extends Component {
           <Text style={styles.cardHeaderText}>Chapters</Text>
         </View>
         <View style={styles.cardContent}>
-          <TouchableOpacity style={styles.cardElements} onPress={this._onPressButton}>
+          <TouchableOpacity style={styles.cardElements} onPress={() => this.props.navigation.navigate('Deck', { data: '1' })}>
             <Text style={styles.cardElementText}>Chapter</Text>
             <Text style={styles.cardElementText}>1</Text>
           </TouchableOpacity>
@@ -38,29 +39,29 @@ export default class Card extends Component {
 const styles = StyleSheet.create({
   cardBody:{
     alignItems: 'center',
-    width: 380,
-    flex:1,
+    width: 350,
+    flex: 1,
     margin: 20,
     backgroundColor: '#ffffff',
-    borderRadius:10,
-    borderBottomColor: '#002647',
+    borderRadius: 15,
+    borderBottomColor: '#003665',
     borderBottomWidth: 3,
-    elevation:10
+    elevation: 13
   },
   cardHeader:{
-    width: 380,
-    padding:10,
+    width: 350,
+    padding:15,
     alignItems: 'center',
     backgroundColor: '#ffffff',
-    borderBottomColor: '#2a8fe7',
-    borderBottomWidth: 1,
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
-    elevation: 5
+    borderBottomColor: '#003665',
+    borderBottomWidth: 1.5,
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
+    elevation: 4
   },
   cardHeaderText:{
     alignItems: 'center',
-    fontFamily: 'Museo 500',
+    fontFamily: 'Museo 700',
     fontSize: 25,
     color: '#06337c',
   },
@@ -72,34 +73,35 @@ const styles = StyleSheet.create({
   cardElements:{
     justifyContent: 'center',
     alignItems: 'center',
-    width: 100,
-    height: 100,
+    width: 105,
+    height: 105,
     borderRadius: 100,
     borderColor: '#002040',
     backgroundColor: '#d9e6ff',
     borderWidth: 2,
-    marginTop: 20,
+    marginTop: 30,
     elevation: 15,
 
   },
   cardElementText:{
     alignItems: 'center',
-    fontFamily: 'Museo Sans_300',
+    fontFamily: 'Museo Sans_500',
     fontSize: 18,
-    color: '#004182',
+    color: '#001b37',
     padding: 5
   },
   cardElementsTwo:{
     justifyContent: 'center',
     alignItems: 'center',
-    width: 100,
-    height: 100,
+    width: 105,
+    height: 105,
     borderRadius: 100,
     borderColor: '#002040',
     backgroundColor: '#d9e6ff',
     borderWidth: 2,
     margin: 20,
-    elevation: 15,
+    marginBottom: 40,
+    // elevation: 15,
   },
   cardElementsTwoParent:{
     flex:1,

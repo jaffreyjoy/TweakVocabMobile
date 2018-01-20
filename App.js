@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  AppRegistry,
   ScrollView,
   StyleSheet,
   Text,
@@ -9,6 +10,7 @@ import {
 import { StackNavigator } from 'react-navigation';
 
 import Chapter from './components/Chapter';
+import Deck from './components/Deck';
 
 class Home extends Component {
 
@@ -28,7 +30,7 @@ class Home extends Component {
     return (
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.chapterContainer}>
-          <Chapter />
+          <Chapter navigation={this.props.navigation}/>
         </View>
       </ScrollView>
     );
@@ -56,4 +58,6 @@ const styles = StyleSheet.create({
 
 const Screens = StackNavigator({
   Home: { screen: Home },
+  Deck: { screen: Deck },
 });
+

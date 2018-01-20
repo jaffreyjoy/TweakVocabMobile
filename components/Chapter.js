@@ -12,7 +12,7 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.cont}>
-        <Card/>
+        <Card navigation={this.props.navigation}/>
       </View>
     );
   }
@@ -21,6 +21,6 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   cont:{
     flex:1,
-    alignItems: 'center',
   }
 });
+
