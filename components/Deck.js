@@ -17,6 +17,8 @@ const height = Dimensions.get('window').height;
 
 let origindata = [{ key: '1', word: 'lol' }, { key: '2', word: 'gtg' }, { key: '3', word: 'ppl' }]
 
+let currentDeck = 0;
+
 export default class Deck extends Component {
 
   constructor(props) {
@@ -40,27 +42,23 @@ export default class Deck extends Component {
         <View>
           {originWordsList}
         </View>
-        <TouchableOpacity style={styles.deckButton} onPress={this._onPressButton}>
-          <Text style={styles.deckButtonText}>PRACTISE</Text>
-        </TouchableOpacity>
+        <View style={styles.deckButtonView}>
+          <TouchableOpacity style={styles.deckButton} onPress={this.onPressDeckButton}>
+            <Text style={styles.deckButtonText}>PRACTISE</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
     return (finalcomp)
   }
 
-
-  onPressRow(obj, index) {
-    console.log('onPressRow=>obj:' + obj + ' ,index:' + index);
-    alert('onPressRow=>obj:' + obj + ' ,index:' + index);
+  onPressDeckButton = () => {
+    alert('Practise Deck '+currentDeck);
   }
 
-  onWillChange(obj, index) {
-    console.log('onWillChange=>obj:' + obj + ' ,index:' + index);
-    // alert('onWillChange=>obj:'+ obj + ' ,index:' + index);
-  }
-
-  onDidChange(obj, index) {
+  onDidChange = (obj, index) => {
     console.log('onDidChange=>obj:' + obj + ' ,index:' + index);
+    currentDeck = index;
     // alert('onDidChange=>obj:'+ obj + ' ,index:' + index);
   }
 
@@ -83,10 +81,8 @@ export default class Deck extends Component {
         <EZSwiper style={[styles.swiper, { width: width, height: height/2 }]}
           dataSource={this.state.noOfCards}
           width={width}
-          height={height/2.2}
+          height={height/2.3}
           renderRow={this.renderRow}
-          onPress={this.onPressRow}
-          onWillChange={this.onWillChange}
           onDidChange={this.onDidChange}
           ratio={0.7}
           index={0}
@@ -105,6 +101,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#2a8fe7'
   },
   swiper: {
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#2a8fe7',
   },
   cell: {
@@ -112,8 +110,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomColor: '#003665',
     borderBottomWidth: 3,
-    // borderColor: '#003665',
-    // borderWidth: 2,
   },
   deckTitle:{
     fontFamily: 'Museo 700',
@@ -124,7 +120,6 @@ const styles = StyleSheet.create({
   deckSubTitle:{
     fontFamily: 'Museo Sans_500',
     fontSize: 25,
-    marginBottom: 20,
     color: '#00336c'
   },
   originList:{
@@ -133,15 +128,23 @@ const styles = StyleSheet.create({
     margin: 3,
     color: '#000000'
   },
+  deckButtonView: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    elevation: 20
+  },
   deckButton:{
     width: 130,
     padding: 10,
-    margin: 20,
+    marginTop: 20,
+    marginBottom: 10,
     backgroundColor: '#2a8fe7',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 20,
     elevation: 3,
+
   },
   deckButtonText:{
     fontFamily: 'Museo Sans Rounded_500',
