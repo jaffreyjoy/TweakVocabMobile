@@ -11,18 +11,19 @@ import { StackNavigator } from 'react-navigation';
 
 import Chapter from './components/Chapter';
 import Deck from './components/Deck';
+import Word from './components/Word';
 
 class Home extends Component {
 
   static navigationOptions = {
-    title: 'Units',
+    title: '⌘  Units',
     headerStyle: {
       backgroundColor: '#00232d',
     },
     headerTitleStyle: {
       color: '#88bfff',
       fontSize: 20,
-      fontWeight: '200'
+      fontWeight: '300'
     }
   };
 
@@ -59,5 +60,5 @@ const styles = StyleSheet.create({
 const Screens = StackNavigator({
   Home: { screen: Home },
   Deck: { screen: Deck },
+  Word: { screen: Word },
 });
-

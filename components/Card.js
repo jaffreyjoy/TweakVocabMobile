@@ -3,11 +3,13 @@ import {
   StyleSheet,
   Text,
   View,
+  Dimensions,
   TouchableOpacity
 } from 'react-native';
 
-export default class Card extends Component {
+const width = Dimensions.get('window').width;
 
+export default class Card extends Component {
 
   render() {
     return (
@@ -16,7 +18,7 @@ export default class Card extends Component {
           <Text style={styles.cardHeaderText}>Chapters</Text>
         </View>
         <View style={styles.cardContent}>
-          <TouchableOpacity style={styles.cardElements} onPress={() => this.props.navigation.navigate('Deck', { data: '1' })}>
+          <TouchableOpacity style={styles.cardElements} onPress={() => this.props.navigation.navigate('Deck', { chapter: 1 })}>
             <Text style={styles.cardElementText}>Chapter</Text>
             <Text style={styles.cardElementText}>1</Text>
           </TouchableOpacity>
@@ -39,7 +41,7 @@ export default class Card extends Component {
 const styles = StyleSheet.create({
   cardBody:{
     alignItems: 'center',
-    width: 350,
+    width: width - width/8,
     flex: 1,
     margin: 20,
     backgroundColor: '#ffffff',
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
     elevation: 13
   },
   cardHeader:{
-    width: 350,
+    width: width - width/8,
     padding:15,
     alignItems: 'center',
     backgroundColor: '#ffffff',
@@ -77,7 +79,7 @@ const styles = StyleSheet.create({
     height: 105,
     borderRadius: 100,
     borderColor: '#002040',
-    backgroundColor: '#d9e6ff',
+    backgroundColor: '#dee9ff',
     borderWidth: 2,
     marginTop: 30,
     elevation: 15,
@@ -97,11 +99,11 @@ const styles = StyleSheet.create({
     height: 105,
     borderRadius: 100,
     borderColor: '#002040',
-    backgroundColor: '#d9e6ff',
+    backgroundColor: '#dee9ff',
     borderWidth: 2,
     margin: 20,
     marginBottom: 40,
-    // elevation: 15,
+    elevation: 15,
   },
   cardElementsTwoParent:{
     flex:1,

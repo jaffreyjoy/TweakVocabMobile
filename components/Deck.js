@@ -36,7 +36,7 @@ export default class Deck extends Component {
     originWordsList = this.renderOriginw();
 
     finalcomp =
-      <View style={[styles.cell, { backgroundColor: "#ffffff", borderRadius: 15, position: 'relative' }]}>
+      <View style={[styles.deckCard, { backgroundColor: "#ffffff", borderRadius: 15, position: 'relative' }]}>
         <Text style={styles.deckTitle}>Deck {index+1}</Text>
         <Text style={styles.deckSubTitle}>Origin Words:</Text>
         <View>
@@ -44,7 +44,7 @@ export default class Deck extends Component {
         </View>
         <View style={styles.deckButtonView}>
           <TouchableOpacity style={styles.deckButton} onPress={this.onPressDeckButton}>
-            <Text style={styles.deckButtonText}>PRACTISE</Text>
+            <Text style={styles.deckButtonText}>PRACTISE 📝</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -54,12 +54,12 @@ export default class Deck extends Component {
 
   onPressDeckButton = () => {
     alert('Practise Deck '+currentDeck);
+    this.props.navigation.navigate('Word', { deck: {currentDeck} });
   }
 
   onDidChange = (obj, index) => {
     console.log('onDidChange=>obj:' + obj + ' ,index:' + index);
     currentDeck = index;
-    // alert('onDidChange=>obj:'+ obj + ' ,index:' + index);
   }
 
   static navigationOptions = {
@@ -77,7 +77,7 @@ export default class Deck extends Component {
 
   render() {
     return (
-      <View style={[styles.container]} contentInsetAdjustmentBehavior="automatic">
+      <View style={styles.container}>
         <EZSwiper style={[styles.swiper, { width: width, height: height/2 }]}
           dataSource={this.state.noOfCards}
           width={width}
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#2a8fe7',
   },
-  cell: {
+  deckCard: {
     flex: 1,
     alignItems: 'center',
     borderBottomColor: '#003665',
@@ -135,8 +135,9 @@ const styles = StyleSheet.create({
     elevation: 20
   },
   deckButton:{
-    width: 130,
     padding: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
     marginTop: 20,
     marginBottom: 10,
     backgroundColor: '#2a8fe7',
