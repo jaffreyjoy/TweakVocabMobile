@@ -7,6 +7,8 @@ import {
   TouchableOpacity
 } from 'react-native';
 
+import Tts from 'react-native-tts';
+
 const width = Dimensions.get('window').width;
 
 import FlipCard from 'react-native-flip-card';
@@ -45,7 +47,7 @@ export default class Card extends Component {
         <View style={styles.back}>
           <View style={styles.backMainWordStyle}>
             <Text style={styles.backMainWordText}>{this.state.word}</Text>
-            <TouchableOpacity onPress={() => { alert('textToSpeechOutput'); }}>
+            <TouchableOpacity onPress={() => { Tts.speak(this.state.word); }}>
               <Text style={styles.backMainWordSpeechIcon}>🔊</Text>
             </TouchableOpacity>
           </View>
@@ -79,11 +81,11 @@ export default class Card extends Component {
       <View style={styles.flipCardContainer}>
         <FlipCard
           flip={this.state.flip}
-          friction={20}
+          friction={6}
           perspective={1500}
           flipHorizontal={true}
           flipVertical={false}
-          clickable={true}
+          clickable={false}
           // alignWidth={true}
           onFlipEnd={(isFlipEnd) => { console.log('isFlipEnd', isFlipEnd) }}
         >
@@ -165,8 +167,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderBottomColor: '#021f4f',
-    borderBottomWidth: 1.5,
-    marginBottom: 20,
+    borderBottomWidth: 1,
+    // marginTop: 15,
+    marginBottom: 15,
     backgroundColor: '#ffffff',
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
@@ -213,7 +216,7 @@ const styles = StyleSheet.create({
     width: width - width/10,
     height: 50,
     justifyContent: 'center',
-    borderTopWidth: 1.5,
+    borderTopWidth: 3,
     borderTopColor: '#021f4f',
     backgroundColor: '#cadcf1',
     borderBottomRightRadius: 10,

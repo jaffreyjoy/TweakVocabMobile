@@ -57,6 +57,7 @@
 		592BAF74299A403D9A326555 /* Museo Sans_700.otf in Resources */ = {isa = PBXBuildFile; fileRef = 75A18482481D4CE891E51178 /* Museo Sans_700.otf */; };
 		8FDC41A2866C4050A9AE8FD9 /* Museo Sans_900_Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1D4E8C2A30DA45F597F35D5D /* Museo Sans_900_Italic.otf */; };
 		14EE54C05FD34B9ABE3BB82E /* Museo Sans_900.otf in Resources */ = {isa = PBXBuildFile; fileRef = 84E869359C264238811F86E0 /* Museo Sans_900.otf */; };
+		90A9B755CA5146FE83A4072F /* libTextToSpeech.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B68371DD27DD4C7AA145370B /* libTextToSpeech.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -305,6 +306,8 @@
 		75A18482481D4CE891E51178 /* Museo Sans_700.otf */ = {isa = PBXFileReference; name = "Museo Sans_700.otf"; path = "../assets/fonts/Museo Sans_700.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		1D4E8C2A30DA45F597F35D5D /* Museo Sans_900_Italic.otf */ = {isa = PBXFileReference; name = "Museo Sans_900_Italic.otf"; path = "../assets/fonts/Museo Sans_900_Italic.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		84E869359C264238811F86E0 /* Museo Sans_900.otf */ = {isa = PBXFileReference; name = "Museo Sans_900.otf"; path = "../assets/fonts/Museo Sans_900.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		4B8B83939F4B479FB14624E5 /* TextToSpeech.xcodeproj */ = {isa = PBXFileReference; name = "TextToSpeech.xcodeproj"; path = "../node_modules/react-native-tts/ios/TextToSpeech.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		B68371DD27DD4C7AA145370B /* libTextToSpeech.a */ = {isa = PBXFileReference; name = "libTextToSpeech.a"; path = "libTextToSpeech.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -333,6 +336,7 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
+				90A9B755CA5146FE83A4072F /* libTextToSpeech.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -501,6 +505,7 @@
 				832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */,
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
+				4B8B83939F4B479FB14624E5 /* TextToSpeech.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1097,6 +1102,14 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TweakNative.app/TweakNative";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)\..\node_modules\react-native-tts\ios\TextToSpeech",
+				);
 			};
 			name = Debug;
 		};
@@ -1114,6 +1127,14 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TweakNative.app/TweakNative";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)\..\node_modules\react-native-tts\ios\TextToSpeech",
+				);
 			};
 			name = Release;
 		};
@@ -1132,6 +1153,10 @@
 				);
 				PRODUCT_NAME = TweakNative;
 				VERSIONING_SYSTEM = "apple-generic";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)\..\node_modules\react-native-tts\ios\TextToSpeech",
+				);
 			};
 			name = Debug;
 		};
@@ -1149,6 +1174,10 @@
 				);
 				PRODUCT_NAME = TweakNative;
 				VERSIONING_SYSTEM = "apple-generic";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)\..\node_modules\react-native-tts\ios\TextToSpeech",
+				);
 			};
 			name = Release;
 		};
@@ -1175,6 +1204,14 @@
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.2;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)\..\node_modules\react-native-tts\ios\TextToSpeech",
+				);
 			};
 			name = Debug;
 		};
@@ -1201,6 +1238,14 @@
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.2;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)\..\node_modules\react-native-tts\ios\TextToSpeech",
+				);
 			};
 			name = Release;
 		};
@@ -1222,6 +1267,10 @@
 				SDKROOT = appletvos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TweakNative-tvOS.app/TweakNative-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 			};
 			name = Debug;
 		};
@@ -1243,6 +1292,10 @@
 				SDKROOT = appletvos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TweakNative-tvOS.app/TweakNative-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
 			};
 			name = Release;
 		};
