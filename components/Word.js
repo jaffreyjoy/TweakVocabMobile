@@ -33,14 +33,17 @@ export default class Card extends Component {
     super(props)
     this.state = {
       flip: false,
-      type: 'derived',
+      type: 'origin',       //  comment this and uncomment next line to see proper derived word card
+      // type: 'derived',
       originWord: 'Ethnos',
-      word: 'Ethnic',
+      word: 'Ethnos',    //  comment this and uncomment next line to see proper derived word card
+      // word: 'Ethnic',
       origin: 'Greek',
-      meaning: 'relating to a population subgroup (within a larger or dominant national or cultural group) with a common national or cultural tradition',
+      meaning: 'nation or race',   //  comment this and uncomment next line to see proper derived word card
+      // meaning: 'relating to a population subgroup (within a larger or dominant national or cultural group) with a common national or cultural tradition',
       tip: 'Relates to specific region/race/nationality',
       example: '“Television shows should reflect the ethnic diversity of the country.”',
-      status:'Viewed',
+      status:'Need MORE Review',
     }
   }
 
