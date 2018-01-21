@@ -81,8 +81,8 @@ export default class Card extends Component {
       <View style={styles.flipCardContainer}>
         <FlipCard
           flip={this.state.flip}
-          friction={6}
-          perspective={1500}
+          friction={8}
+          perspective={1000}
           flipHorizontal={true}
           flipVertical={false}
           clickable={false}
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
   },
   backMainWordText:{
     margin: 10,
-    fontFamily: 'Museo Sans Rounded_700',
+    fontFamily: 'Museo Sans Rounded_500',
     fontSize: 30,
     color: '#001b54',
   },
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     marginRight: 18,
   },
   backMainText:{
-    fontFamily: 'Museo Sans Rounded_700',
+    fontFamily: 'Museo Sans Rounded_500',
     fontSize: 23,
     color: '#001b54',
   },
