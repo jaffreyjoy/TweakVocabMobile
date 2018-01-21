@@ -7,11 +7,13 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import Tts from 'react-native-tts';
-
 const width = Dimensions.get('window').width;
 
+import Tts from 'react-native-tts';
+
 import FlipCard from 'react-native-flip-card';
+
+import * as Progress from 'react-native-progress';
 
 export default class Card extends Component {
 
@@ -31,14 +33,30 @@ export default class Card extends Component {
     super(props)
     this.state = {
       flip: false,
-      type: 'origin',
-      originWord: '',
-      word: 'Ethnos',
+      type: 'derived',
+      originWord: 'Ethnos',
+      word: 'Ethnic',
       origin: 'Greek',
-      meaning: 'Nation or Race',
+      meaning: 'relating to a population subgroup (within a larger or dominant national or cultural group) with a common national or cultural tradition',
       tip: 'Relates to specific region/race/nationality',
-      example: '',
+      example: '“Television shows should reflect the ethnic diversity of the country.”',
+      status:'Viewed',
     }
+  }
+
+  getStatusColor = () => {
+    if(this.state.status == 'Viewed')
+      return('#0372da');
+    else if(this.state.status == 'Mastered')
+      return('#3ed627');
+    else if(this.state.status == 'Need Review')
+      return('#d2c000');
+    else if(this.state.status == 'Need MORE Review')
+      return('#dd2800');
+  }
+
+  changeStatus = (newStatus) => {
+
   }
 
   renderBack = () => {
@@ -63,16 +81,66 @@ export default class Card extends Component {
             <Text style={styles.backMainText}>Tip : </Text>
             <Text style={styles.backSubText}>{this.state.tip}</Text>
           </View>
-          <View style={styles.backBottomPadding}></View>
           <TouchableOpacity
-            onPress={() => { this.setState({ flip: !this.state.flip });}}
+            onPress={() => { this.setState({ flip: !this.state.flip, status: 'Viewed' });}}
           >
             <View style={styles.backButton}>
                 <Text style={styles.backButtonText}>Click to see derived words ➜</Text>
             </View>
           </TouchableOpacity>
         </View>
-      )
+      );
+    }
+    else{
+      return(
+        <View style={styles.back}>
+          <View style={styles.backMainWordStyle}>
+            <Text style={styles.backMainWordText}>{this.state.word}</Text>
+            <TouchableOpacity onPress={() => { Tts.speak(this.state.word); }}>
+              <Text style={styles.backMainWordSpeechIcon}>🔊</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.backElements}>
+            <Text style={[styles.backMainText,{fontSize : 20}]}>Origin word : </Text>
+            <Text style={[styles.backSubText,{fontSize : 20}]}>{this.state.originWord}</Text>
+          </View>
+          <View style={styles.backElements}>
+            <Text style={[styles.backMainText,{fontSize : 20}]}>Meaning : </Text>
+            <Text style={[styles.backSubText,{fontSize : 20}]}>{this.state.meaning}</Text>
+          </View>
+          <View style={styles.backElements}>
+            <Text style={[styles.backMainText,{fontSize : 20}]}>Example : </Text>
+            <Text style={[styles.backSubText,{fontSize : 20}]}>{this.state.example}</Text>
+          </View>
+          <View style={styles.backElements}>
+            <Text style={[styles.backMainText,{fontSize : 20}]}>Status : </Text>
+            <View style={[styles.wordStatusStyle,{backgroundColor:this.getStatusColor()}]}>
+              <Text style={styles.wordStatusText}>{this.state.status}</Text>
+            </View>
+          </View>
+          <TouchableOpacity
+            onPress={() => { this.changeStatus('Mastered');}}
+          >
+            <View style={styles.masterButton}>
+                <Text style={styles.masterButtonText}>😎 Mastered </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => { this.changeStatus('Need Review');}}
+          >
+            <View style={styles.reviewButton}>
+                <Text style={styles.reviewButtonText}>🤔 Need review</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => { this.changeStatus('Need MORE Review');}}
+          >
+            <View style={styles.moreReviewButton}>
+                <Text style={styles.moreReviewButtonText}>😵 Need MORE review </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      );
     }
   }
 
@@ -90,7 +158,7 @@ export default class Card extends Component {
           onFlipEnd={(isFlipEnd) => { console.log('isFlipEnd', isFlipEnd) }}
         >
         {/* Face Side */}
-        <View style={styles.face}>
+        <View style={styles.front}>
           <View>
             <Text style={styles.frontWord}>{this.state.word}</Text>
             <Text style={styles.type}>({this.state.type})</Text>
@@ -118,7 +186,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#2a8fe7'
   },
-  face: {
+  front: {
     width: width - width/10,
     borderRadius:10,
     backgroundColor: '#ffffff',
@@ -195,28 +263,26 @@ const styles = StyleSheet.create({
     flexDirection : 'row',
     flexWrap: 'wrap',
     alignItems: 'flex-start',
-    margin: 5,
+    margin: 8,
     marginLeft: 18,
     marginRight: 18,
   },
   backMainText:{
-    fontFamily: 'Museo Sans Rounded_500',
-    fontSize: 23,
+    fontFamily: 'Museo 500',
+    fontSize: 22,
     color: '#001b54',
   },
   backSubText:{
     fontFamily: 'Museo Sans Rounded_300',
-    fontSize: 23,
+    fontSize: 22,
     color: '#00226a',
-  },
-  backBottomPadding:{
-    marginBottom: 30,
   },
   backButton: {
     width: width - width/10,
     height: 50,
+    marginTop: 30,
     justifyContent: 'center',
-    borderTopWidth: 3,
+    borderTopWidth: 2,
     borderTopColor: '#021f4f',
     backgroundColor: '#cadcf1',
     borderBottomRightRadius: 10,
@@ -227,5 +293,55 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Museo Sans Rounded_500',
     fontSize: 22,
+  },
+  masterButton:{
+    width: width - width/10,
+    marginTop: 20,
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 159, 3, 0.28)',
+  },
+  masterButtonText:{
+    color: '#009f03',
+    padding: 12,
+    textAlign: 'center',
+    fontFamily: 'Museo Sans Rounded_500',
+    fontSize: 22,
+  },
+  reviewButton:{
+    width: width - width/10,
+    justifyContent: 'center',
+    backgroundColor: 'rgba(222, 217, 0, 0.39)',
+  },
+  reviewButtonText:{
+    color: '#c1ad00',
+    padding: 12,
+    textAlign: 'center',
+    fontFamily: 'Museo Sans Rounded_500',
+    fontSize: 22,
+  },
+  moreReviewButton:{
+    width: width - width/10,
+    justifyContent: 'center',
+    backgroundColor: 'rgba(212, 41, 23, 0.34)',
+    borderBottomRightRadius: 10,
+    borderBottomLeftRadius: 10,
+  },
+  moreReviewButtonText:{
+    color: '#d42917',
+    padding: 12,
+    textAlign: 'center',
+    fontFamily: 'Museo Sans Rounded_500',
+    fontSize: 22,
+  },
+  wordStatusStyle:{
+    borderRadius: 15,
+    padding: 3,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  wordStatusText:{
+    color: '#ffffff',
+    fontFamily: 'Museo Sans Rounded_500',
+    fontSize: 18,
   },
 });
