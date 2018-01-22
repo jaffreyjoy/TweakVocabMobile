@@ -11,7 +11,7 @@ const width = Dimensions.get('window').width;
 
 import Tts from 'react-native-tts';
 
-export default class BackOriginCard extends Component {
+export default class OriginWordCardBack extends Component {
 
   constructor(props) {
     super(props)

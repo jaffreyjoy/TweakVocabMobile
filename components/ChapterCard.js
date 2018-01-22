@@ -9,7 +9,7 @@ import {
 
 const width = Dimensions.get('window').width;
 
-export default class Card extends Component {
+export default class ChapterCard extends Component {
 
   render() {
     return (

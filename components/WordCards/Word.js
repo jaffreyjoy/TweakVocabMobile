@@ -11,15 +11,12 @@ const width = Dimensions.get('window').width;
 
 import FlipCard from 'react-native-flip-card';
 
-import * as Progress from 'react-native-progress';
-
 import OriginDerivedWordCardFront from './OriginDerivedWordCardFront';
-
+import ProgressCard from './ProgressCard';
 import OriginWordCardBack from './OriginWordCardBack';
-
 import DerivedWordCardBack from './DerivedWordCardBack';
 
-export default class Card extends Component {
+export default class Word extends Component {
 
   static navigationOptions = {
     title: 'Word',
@@ -47,7 +44,12 @@ export default class Card extends Component {
       meaning: 'relating to a population subgroup (within a larger or dominant national or cultural group) with a common national or cultural tradition',
       tip: 'Relates to specific region/race/nationality',
       example: '“Television shows should reflect the ethnic diversity of the country.”',
-      status:'Need MORE Review',
+      status: 'Need MORE Review',
+      viewed: 10,
+      needRev: 3,
+      needMoreRev: 2,
+      mastered: 5,
+      totalWords: 15,
     }
   }
 
@@ -55,21 +57,21 @@ export default class Card extends Component {
     this.setState({flip : !this.state.flip});
   }
 
-  // getStatusColor = () => {
-  //   if(this.state.status == 'Viewed')
-  //     return('#0372da');
-  //   else if(this.state.status == 'Mastered')
-  //     return('#3ed627');
-  //   else if(this.state.status == 'Need Review')
-  //     return('#d2c000');
-  //   else if(this.state.status == 'Need MORE Review')
-  //     return('#dd2800');
-  // }
-
   changeStatus = (newStatus) => {
     this.setState({status : newStatus});
-    alert(newStatus);
+    // alert(newStatus);
     this.flipCard();
+  }
+
+  chooseToShowProgress = () => {
+    if(!this.state.flip){
+      return(
+        <ProgressCard state={this.state}/>
+      );
+    }
+    else {
+      //do nothing
+    }
   }
 
   renderFront = () => {
@@ -113,6 +115,7 @@ export default class Card extends Component {
           {this.renderBack()}
 
         </FlipCard>
+        {this.chooseToShowProgress()}
       </View>
     );
   }

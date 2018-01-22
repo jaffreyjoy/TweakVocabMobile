@@ -5,14 +5,14 @@ import {
   View,
 } from 'react-native';
 
-import Card from './Card';
+import ChapterCard from './ChapterCard';
 
-export default class App extends Component {
+export default class Chapter extends Component {
 
   render() {
     return (
       <View style={styles.cont}>
-        <Card navigation={this.props.navigation}/>
+        <ChapterCard navigation={this.props.navigation}/>
       </View>
     );
   }
@@ -23,4 +23,3 @@ const styles = StyleSheet.create({
     flex:1,
   }
 });
-

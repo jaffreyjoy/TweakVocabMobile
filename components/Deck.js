@@ -7,8 +7,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import Card from './Card';
-
 import EZSwiper from 'react-native-ezswiper';
 
 const width = Dimensions.get('window').width;
