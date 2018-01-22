@@ -11,7 +11,7 @@ import { StackNavigator } from 'react-navigation';
 
 import Chapter from './components/Chapter';
 import Deck from './components/Deck';
-import Word from './components/Word';
+import Word from './components/WordCards/Word';
 
 class Home extends Component {
 
