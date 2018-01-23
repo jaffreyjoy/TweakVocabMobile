@@ -11,6 +11,9 @@ const width = Dimensions.get('window').width;
 
 import * as Progress from 'react-native-progress';
 
+let intervalFlag;
+let intervalFlag2;
+
 export default class ProgressCard extends Component {
 
   constructor(props) {
@@ -20,16 +23,117 @@ export default class ProgressCard extends Component {
 
     this.state = {
       viewed: viewed,
-      viewedProgress: viewed/totalWords,
+      viewedProgress: Math.round((viewed/totalWords)*100)/100,
       mastered: mastered,
-      masteredProgress: mastered/totalWords,
+      masteredProgress: Math.round((mastered/totalWords)*100)/100,
       needRev: needRev,
-      needRevProgress: needRev/totalWords,
+      needRevProgress: Math.round((needRev/totalWords)*100)/100,
       needMoreRev: needMoreRev,
-      needMoreRevProgress: needMoreRev/totalWords,
+      needMoreRevProgress: Math.round((needMoreRev/totalWords)*100)/100,
       totalWords: totalWords,
     };
 
+  }
+
+  animateProgressBar = () => {
+    let initialViewed = this.state.viewed;
+    let initialViewedProgress = this.state.viewedProgress;
+    let targetViewedProgress = Math.floor((initialViewedProgress)*10)/10;
+    let tempViewed = 0;
+    let tempViewedProgress = 0.0;
+    this.setState({ viewed : 0, viewedProgress : 0.0});
+    intervalFlag = setInterval(() => {
+      tempViewed = tempViewed + 1;
+      tempViewedProgress = Math.round((tempViewedProgress + 0.1)*10)/10;;
+      if (tempViewed <= initialViewed) {
+        this.setState({ viewed :tempViewed });
+      }
+      if (tempViewedProgress <= targetViewedProgress) {
+        this.setState({ viewedProgress :tempViewedProgress});
+      }
+    }, 120);
+    if(this.state.viewedProgress == targetViewedProgress && this.state.viewed == initialViewed) {
+      clearInterval(intervalFlag);
+      setTimeout(() => {
+        this.setState({
+          viewed : initialViewed,
+          viewedProgress : initialViewedProgress
+        });
+      },50);
+    }
+  }
+
+  animateProgressCircles = () => {
+
+    let initialMasteredProgress = this.state.masteredProgress;
+    let tempMasteredProgress = 0.0;
+    let targetMasteredProgress = Math.floor((initialMasteredProgress)*10)/10;
+
+    let initialNeedRevProgress = this.state.needRevProgress;
+    let tempNeedRevProgress = 0.0;
+    let targetNeedRevProgress = Math.floor((initialNeedRevProgress)*10)/10;
+
+    let initialNeedMoreRevProgress = this.state.needMoreRevProgress;
+    let tempNeedMoreRevProgress = 0.0;
+    let targetNeedMoreRevProgress = Math.floor((initialNeedMoreRevProgress)*10)/10;
+
+    this.setState({
+       masteredProgress : 0.0,
+       needRevProgress : 0.0,
+       needMoreRevProgress : 0.0,
+     });
+
+    setTimeout(() => {
+      intervalFlag2 = setInterval(() => {
+        if(this.state.masteredProgress == targetMasteredProgress
+        && this.state.needRevProgress == targetNeedRevProgress
+        && this.state.needMoreRevProgress == targetNeedMoreRevProgress){
+          console.log('2beforeclear');
+          clearInterval(intervalFlag2);
+          console.log('imaster '+initialMasteredProgress);
+          console.log('2afterclear');
+          setTimeout(()=>{
+            this.setState({
+               masteredProgress : initialMasteredProgress,
+               needRevProgress : initialNeedRevProgress,
+               needMoreRevProgress : initialNeedMoreRevProgress,
+             });
+          },70);
+        }
+
+        if (tempMasteredProgress < targetMasteredProgress)
+          tempMasteredProgress = Math.round((tempMasteredProgress + 0.1)*10)/10;
+
+        if(tempNeedRevProgress < targetNeedRevProgress)
+          tempNeedRevProgress = Math.round((tempNeedRevProgress + 0.1)*10)/10;
+
+        if(tempNeedRevProgress < targetNeedRevProgress)
+          tempNeedMoreRevProgress = Math.round((tempNeedMoreRevProgress + 0.1)*10)/10;
+
+        if (tempMasteredProgress <= targetMasteredProgress) {
+          this.setState({
+             masteredProgress : tempMasteredProgress,
+           });
+        }
+        if (tempNeedRevProgress <= targetNeedRevProgress) {
+          this.setState({
+             needRevProgress : tempNeedRevProgress,
+           });
+        }
+        if (tempNeedMoreRevProgress <= targetNeedMoreRevProgress) {
+          this.setState({
+             needMoreRevProgress : tempNeedMoreRevProgress,
+           });
+        }
+
+      }, 200);
+    },100);
+  }
+
+  componentDidMount() {
+    this.animateProgressBar();
+    this.animateProgressCircles();
+    console.log('afterhere');
   }
 
   render() {
@@ -40,7 +144,7 @@ export default class ProgressCard extends Component {
           style={styles.progressBar}
           progress={this.state.viewedProgress}
           color='#0372da'
-          width={330}
+          width={320}
           height={12}
           borderRadius={12}
           borderWidth={2.5}
@@ -57,7 +161,7 @@ export default class ProgressCard extends Component {
               color='#3ed627'
               size={80}
               showsText={true}
-              formatText={()=>(''+Math.round(this.state.masteredProgress*100)+'%')}
+              formatText={()=>(''+this.state.masteredProgress*100+'%')}
               textStyle={styles.circlePercentText}
               borderWidth={2}
               thickness={5}
@@ -73,7 +177,7 @@ export default class ProgressCard extends Component {
                 color='#ddcc19'
                 size={80}
                 showsText={true}
-                formatText={()=>(''+Math.round(this.state.needRevProgress*100)+'%')}
+                formatText={()=>(''+this.state.needRevProgress*100+'%')}
                 textStyle={styles.circlePercentText}
                 borderWidth={2}
                 thickness={5}
@@ -89,7 +193,7 @@ export default class ProgressCard extends Component {
               color='#dd2800'
               size={80}
               showsText={true}
-              formatText={()=>(''+Math.round(this.state.needMoreRevProgress*100)+'%')}
+              formatText={()=>(''+this.state.needMoreRevProgress*100+'%')}
               textStyle={styles.circlePercentText}
               borderWidth={2}
               thickness={5}
@@ -118,7 +222,7 @@ const styles = StyleSheet.create({
   viewedText:{
     alignSelf: 'flex-start',
     marginLeft: 22,
-    marginTop: 15,
+    marginTop: 25,
     marginBottom: 3,
     fontFamily: 'Museo Sans Rounded_500',
     fontSize: 18,

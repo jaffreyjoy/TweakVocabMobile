@@ -51,7 +51,7 @@ export default class Deck extends Component {
   }
 
   onPressDeckButton = () => {
-    alert('Practise Deck '+currentDeck);
+    // alert('Practise Deck '+currentDeck);
     this.props.navigation.navigate('Word', { deck: {currentDeck} });
   }
 
