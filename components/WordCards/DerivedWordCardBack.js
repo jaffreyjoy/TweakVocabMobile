@@ -19,13 +19,13 @@ export default class DerivedWordCardBack extends Component {
   }
 
   getStatusColor = () => {
-    if(this.state.status == 'Viewed')
+    if(this.state.status == 'Viewed')                                 // Viewed and not one of the 3 other labels
       return('#0372da');
-    else if(this.state.status == 'Mastered')
+    else if(this.state.status == 'Mastered')                          // Mastered
       return('#3ed627');
-    else if(this.state.status == 'Need Review')
+    else if(this.state.status == 'Currently Learning')                // Currently Learning
       return('#d2c000');
-    else if(this.state.status == 'Need MORE Review')
+    else if(this.state.status == 'Need Review')                       // Need Review
       return('#dd2800');
   }
 
@@ -57,24 +57,17 @@ export default class DerivedWordCardBack extends Component {
           </View>
         </View>
         <TouchableOpacity
-          onPress={() => { this.props.changeStatus('Mastered');}}
+          onPress={() => { this.props.changeStatusAndFetchNext('Mastered');}}        //changeStatus to Mastered
         >
           <View style={styles.masterButton}>
               <Text style={styles.masterButtonText}>😎 Mastered </Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => { this.props.changeStatus('Need Review');}}
+          onPress={() => { this.props.changeStatusAndFetchNext('Need Review');}}       //changeStatus to Need Review
         >
           <View style={styles.reviewButton}>
-              <Text style={styles.reviewButtonText}>🤔 Need review</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => { this.props.changeStatus('Need MORE Review');}}
-        >
-          <View style={styles.moreReviewButton}>
-              <Text style={styles.moreReviewButtonText}>😵 Need MORE review </Text>
+              <Text style={styles.reviewButtonText}>🤔 Need Review</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -182,23 +175,11 @@ const styles = StyleSheet.create({
   reviewButton:{
     width: width - width/10,
     justifyContent: 'center',
-    backgroundColor: 'rgba(222, 217, 0, 0.39)',
-  },
-  reviewButtonText:{
-    color: '#c1ad00',
-    padding: 12,
-    textAlign: 'center',
-    fontFamily: 'Museo Sans Rounded_500',
-    fontSize: 22,
-  },
-  moreReviewButton:{
-    width: width - width/10,
-    justifyContent: 'center',
     backgroundColor: 'rgba(212, 41, 23, 0.34)',
     borderBottomRightRadius: 10,
     borderBottomLeftRadius: 10,
   },
-  moreReviewButtonText:{
+  reviewButtonText:{
     color: '#d42917',
     padding: 12,
     textAlign: 'center',

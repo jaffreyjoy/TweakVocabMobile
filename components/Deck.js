@@ -17,21 +17,108 @@ let origindata = [{ key: '1', word: 'lol' }, { key: '2', word: 'gtg' }, { key: '
 
 let currentDeck = 0;
 
+let SQLite = require('react-native-sqlite-storage')
+let db = SQLite.openDatabase({ name: 'tweak-data.db',  location: 'default'});
+
 export default class Deck extends Component {
 
   constructor(props) {
     super(props)
-    this.state = { noOfCards: ['', '', ''] }
+    const {navigation, unit ,chapter} = this.props.navigation.state.params;
+    this.state = {
+      navigation: navigation,
+      unit: unit,
+      chapter: chapter,
+      // noOfCards: ['', '', ''],
+      noOfDecks: [''],
+      origindata: [
+        [{ key: 1, word: 'lol' }],
+        [{ key: 2, word: 'lol' }],
+        [{ key: 3, word: 'lol' }]
+      ]
+    }
+    // alert(unit+" "+chapter);
+
   }
 
-  renderOriginw() {
-    return origindata.map(ogdata => (<Text key={ogdata.key} style={styles.originList}>{ogdata.word}</Text>));
+  componentWillMount() {
+    //get no of decks from the current chapter
+    let noOfDecks;
+    db.transaction((tx) => {
+      tx.executeSql('SELECT COUNT(DISTINCT deck) AS noOfDecks FROM origin WHERE unit=? AND chapter=?', [this.state.unit,this.state.chapter], (tx, countResult) => {
+        noOfDecks = countResult.rows.item(0).noOfDecks;
+        console.log(noOfDecks);
+        // this.setNoOfDecks(noOfDecks);
+        this.insertOriginData(noOfDecks);
+        // console.log('set parent');
+        // console.log('parent '+parentDataArray.toString());
+        // console.log('origindata '+this.state.origindata.toString());
+        // this.setState({origindata:parentDataArray});
+      });
+    });
+    // this.insertOriginData(noOfDecks);
   }
 
+  insertOriginData = (noOfDecks) => {
+    let tempArray =[];
+    let parentDataArray = [];
+    console.log('no of decks in insertorigin '+noOfDecks);
+    for (let i = 0; i < noOfDecks; i++) {
+      console.log('here');
+      let childDataArray = []
+      db.executeSql('SELECT origin_word FROM origin WHERE unit=? AND chapter=? AND deck=?', [this.state.unit,this.state.chapter,i+1], (selectResult) => {
+      }).then(selectResult){
+          tempArray.push('');
+          this.setState({noOfDecks:tempArray});
+          console.log(this.state.unit);
+          console.log(this.state.chapter);
+          console.log(this.state.noOfDecks);
+          console.log('length '+selectResult.rows.length);
+          for (let j = 0; j < selectResult.length; j++) {
+            console.log('child push');
+            childDataArray.push({
+              key: j,
+              word: selectResult.rows.item(j).origin_word,
+            });
+          }
+          console.log('set parent');
+          parentDataArray.push(childDataArray);
+          console.log('parent '+parentDataArray);
+          this.setState({origindata:parentDataArray});
+          console.log('origindata '+this.state.origindata);
+        };
+      console.log('for end');
+    }
+  }
+
+  //set 'x' no of decks for ezswiper to generate 'x' no of cards
+  setNoOfDecks(noOfDecks){
+    console.log('no of decks'+noOfDecks);
+    tempArray =[];
+    for (let i = 0; i < noOfDecks; i++) {
+      console.log(i+' add deck');
+      tempArray.push(' ');
+    }
+    this.setState({noOfDecks:tempArray});
+    console.log('temparray '+tempArray.toString());
+    console.log('no of decks in state '+this.state.noOfDecks.toString());
+  }
+
+  //return origin words in a deck as a component
+  renderOriginw(index) {
+    return this.state.origindata[index].map(ogdata => (
+      <Text key={ogdata.key} style={styles.originList}>{ogdata.word}</Text>
+    ));
+  // return origindata.map(ogdata => (
+  //     <Text key={ogdata.key} style={styles.originList}>{ogdata.word}</Text>
+  //   ));
+  }
+
+  // return single deck card components with data
   renderRow = (obj, index) => {
     let comp;
     let finalcomp;
-    originWordsList = this.renderOriginw();
+    originWordsList = this.renderOriginw(index);
 
     finalcomp =
       <View style={[styles.deckCard, { backgroundColor: "#ffffff", borderRadius: 15, position: 'relative' }]}>
@@ -41,7 +128,7 @@ export default class Deck extends Component {
           {originWordsList}
         </View>
         <View style={styles.deckButtonView}>
-          <TouchableOpacity style={styles.deckButton} onPress={this.onPressDeckButton}>
+        <TouchableOpacity style={styles.deckButton} onPress={this.onPressDeckButton}>
             <Text style={styles.deckButtonText}>PRACTISE 📝</Text>
           </TouchableOpacity>
         </View>
@@ -52,7 +139,12 @@ export default class Deck extends Component {
 
   onPressDeckButton = () => {
     // alert('Practise Deck '+currentDeck);
-    this.props.navigation.navigate('Word', { deck: {currentDeck} });
+    this.props.navigation.navigate('Word', {
+      navigation: this.state.navigation,
+      unit: this.state.unit,
+      chapter: this.state.chapter,
+      deck: currentDeck + 1,
+    });
   }
 
   onDidChange = (obj, index) => {
@@ -77,9 +169,9 @@ export default class Deck extends Component {
     return (
       <View style={styles.container}>
         <EZSwiper style={[styles.swiper, { width: width, height: height/2 }]}
-          dataSource={this.state.noOfCards}
+          dataSource={this.state.noOfDecks}
           width={width}
-          height={height/2.3}
+          height={height/2.2}
           renderRow={this.renderRow}
           onDidChange={this.onDidChange}
           ratio={0.7}
@@ -118,7 +210,8 @@ const styles = StyleSheet.create({
   deckSubTitle:{
     fontFamily: 'Museo Sans_500',
     fontSize: 25,
-    color: '#00336c'
+    color: '#00336c',
+    marginBottom: 5,
   },
   originList:{
     fontFamily: 'Museo Sans Rounded_500',
@@ -128,22 +221,22 @@ const styles = StyleSheet.create({
   },
   deckButtonView: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
     elevation: 20
   },
   deckButton:{
     padding: 10,
     paddingLeft: 20,
     paddingRight: 20,
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: 15,
+    marginBottom: 25,
     backgroundColor: '#2a8fe7',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 20,
     elevation: 3,
-
   },
   deckButtonText:{
     fontFamily: 'Museo Sans Rounded_500',

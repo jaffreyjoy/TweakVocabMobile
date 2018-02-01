@@ -12,7 +12,7 @@ export default class Chapter extends Component {
   render() {
     return (
       <View style={styles.cont}>
-        <ChapterCard navigation={this.props.navigation}/>
+        <ChapterCard navigation={this.props.navigation} data={{unit :1}}/>
       </View>
     );
   }

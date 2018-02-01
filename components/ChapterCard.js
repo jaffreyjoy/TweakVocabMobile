@@ -10,6 +10,17 @@ import {
 const width = Dimensions.get('window').width;
 
 export default class ChapterCard extends Component {
+  constructor(props){
+    super(props);
+  }
+
+  navigateToDeckPage = (chapter) => {
+    this.props.navigation.navigate('Deck', {
+      navigation: this.props.navigation,
+      unit: this.props.data.unit,
+      chapter: chapter
+     })
+  }
 
   render() {
     return (
@@ -18,17 +29,17 @@ export default class ChapterCard extends Component {
           <Text style={styles.cardHeaderText}>Chapters</Text>
         </View>
         <View style={styles.cardContent}>
-          <TouchableOpacity style={styles.cardElements} onPress={() => this.props.navigation.navigate('Deck', { chapter: 1 })}>
+          <TouchableOpacity style={styles.cardElements} onPress={() => {this.navigateToDeckPage(1)}}>
             <Text style={styles.cardElementText}>Chapter</Text>
             <Text style={styles.cardElementText}>1</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.cardElementsTwoParent}>
-            <TouchableOpacity style={styles.cardElementsTwo} onPress={this._onPressButton}>
+            <TouchableOpacity style={styles.cardElementsTwo} onPress={() => {this.navigateToDeckPage(2)}}>
               <Text style={styles.cardElementText}>Chapter</Text>
               <Text style={styles.cardElementText}>2</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.cardElementsTwo} onPress={this._onPressButton}>
+            <TouchableOpacity style={styles.cardElementsTwo} onPress={() => {this.navigateToDeckPage(3)}}>
               <Text style={styles.cardElementText}>Chapter</Text>
               <Text style={styles.cardElementText}>3</Text>
             </TouchableOpacity>

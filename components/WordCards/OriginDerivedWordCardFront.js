@@ -23,7 +23,7 @@ export default class OriginDerivedWordCardFront extends Component {
           <Text style={styles.frontWord}>{this.state.word}</Text>
           <Text style={styles.type}>({this.state.type})</Text>
         </View>
-        <TouchableOpacity onPress={() => { this.props.changeStatus('Viewed');}}>
+        <TouchableOpacity onPress={() => { let func = (this.state.type=='origin')?this.props.flipCard():this.props.seeMeaningForDerivedWord()}}>
           <View style={styles.frontButton}>
               <Text style={styles.frontButtonText}>Click to see meaning  ➜</Text>
           </View>

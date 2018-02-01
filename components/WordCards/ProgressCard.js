@@ -19,7 +19,7 @@ export default class ProgressCard extends Component {
   constructor(props) {
     super(props)
 
-    const { viewed , mastered, needRev, needMoreRev,  totalWords } = this.props.state;
+    const { viewed , mastered, needRev, currentlyLearning,  totalWords } = this.props.state;
 
     this.state = {
       viewed: viewed,
@@ -28,14 +28,14 @@ export default class ProgressCard extends Component {
       masteredProgress: Math.round((mastered/totalWords)*100)/100,
       needRev: needRev,
       needRevProgress: Math.round((needRev/totalWords)*100)/100,
-      needMoreRev: needMoreRev,
-      needMoreRevProgress: Math.round((needMoreRev/totalWords)*100)/100,
+      currentlyLearning: currentlyLearning,
+      currentlyLearningProgress: Math.round((currentlyLearning/totalWords)*100)/100,
       totalWords: totalWords,
     };
 
   }
 
-  animateProgressBar = () => {
+  animateProgressBar(){
     let initialViewed = this.state.viewed;
     let initialViewedProgress = this.state.viewedProgress;
     let targetViewedProgress = Math.floor((initialViewedProgress)*10)/10;
@@ -63,7 +63,7 @@ export default class ProgressCard extends Component {
     }
   }
 
-  animateProgressCircles = () => {
+  animateProgressCircles(){
 
     let initialMasteredProgress = this.state.masteredProgress;
     let tempMasteredProgress = 0.0;
@@ -73,21 +73,21 @@ export default class ProgressCard extends Component {
     let tempNeedRevProgress = 0.0;
     let targetNeedRevProgress = Math.floor((initialNeedRevProgress)*10)/10;
 
-    let initialNeedMoreRevProgress = this.state.needMoreRevProgress;
-    let tempNeedMoreRevProgress = 0.0;
-    let targetNeedMoreRevProgress = Math.floor((initialNeedMoreRevProgress)*10)/10;
+    let initialCurrentlyLearningProgress = this.state.currentlyLearningProgress;
+    let tempCurrentlyLearningProgress = 0.0;
+    let targetCurrentlyLearningProgress = Math.floor((initialCurrentlyLearningProgress)*10)/10;
 
     this.setState({
        masteredProgress : 0.0,
        needRevProgress : 0.0,
-       needMoreRevProgress : 0.0,
+       currentlyLearningProgress : 0.0,
      });
 
     setTimeout(() => {
       intervalFlag2 = setInterval(() => {
         if(this.state.masteredProgress == targetMasteredProgress
         && this.state.needRevProgress == targetNeedRevProgress
-        && this.state.needMoreRevProgress == targetNeedMoreRevProgress){
+        && this.state.currentlyLearningProgress == targetCurrentlyLearningProgress){
           console.log('2beforeclear');
           clearInterval(intervalFlag2);
           console.log('imaster '+initialMasteredProgress);
@@ -96,7 +96,7 @@ export default class ProgressCard extends Component {
             this.setState({
                masteredProgress : initialMasteredProgress,
                needRevProgress : initialNeedRevProgress,
-               needMoreRevProgress : initialNeedMoreRevProgress,
+               currentlyLearningProgress : initialCurrentlyLearningProgress,
              });
           },70);
         }
@@ -107,8 +107,8 @@ export default class ProgressCard extends Component {
         if(tempNeedRevProgress < targetNeedRevProgress)
           tempNeedRevProgress = Math.round((tempNeedRevProgress + 0.1)*10)/10;
 
-        if(tempNeedRevProgress < targetNeedRevProgress)
-          tempNeedMoreRevProgress = Math.round((tempNeedMoreRevProgress + 0.1)*10)/10;
+        if(tempCurrentlyLearningProgress < targetCurrentlyLearningProgress)
+          tempCurrentlyLearningProgress = Math.round((tempCurrentlyLearningProgress + 0.1)*10)/10;
 
         if (tempMasteredProgress <= targetMasteredProgress) {
           this.setState({
@@ -120,21 +120,22 @@ export default class ProgressCard extends Component {
              needRevProgress : tempNeedRevProgress,
            });
         }
-        if (tempNeedMoreRevProgress <= targetNeedMoreRevProgress) {
+        if (tempCurrentlyLearningProgress <= targetCurrentlyLearningProgress) {
           this.setState({
-             needMoreRevProgress : tempNeedMoreRevProgress,
+             currentlyLearningProgress : tempCurrentlyLearningProgress,
            });
         }
 
       }, 200);
     },100);
   }
+  
+  // componentDidMount() {
+  //   this.animateProgressBar();
+  //   this.animateProgressCircles();
+  //   // console.log('afterhere');
+  // }
 
-  componentDidMount() {
-    this.animateProgressBar();
-    this.animateProgressCircles();
-    console.log('afterhere');
-  }
 
   render() {
     return (
@@ -169,8 +170,8 @@ export default class ProgressCard extends Component {
           </View>
           <View style={styles.circleProgessInnerContainer}>
             <View style={styles.textContainer}>
-              <Text style={styles.textNeedReview}>Need</Text>
-              <Text style={styles.textNeedReview}>Review</Text>
+              <Text style={styles.textNeedReview}>Currently</Text>
+              <Text style={styles.textNeedReview}>Learning</Text>
             </View>
               <Progress.Circle
                 progress={this.state.needRevProgress}
@@ -185,15 +186,15 @@ export default class ProgressCard extends Component {
           </View>
           <View style={styles.circleProgessInnerContainer}>
             <View style={styles.textContainer}>
-              <Text style={styles.textNeedMoreReview}>MORE</Text>
-              <Text style={styles.textNeedMoreReview}>Review</Text>
+              <Text style={styles.textCurrentlyLearningiew}>Need</Text>
+              <Text style={styles.textCurrentlyLearningiew}>Review</Text>
             </View>
             <Progress.Circle
-              progress={this.state.needMoreRevProgress}
+              progress={this.state.currentlyLearningProgress}
               color='#dd2800'
               size={80}
               showsText={true}
-              formatText={()=>(''+this.state.needMoreRevProgress*100+'%')}
+              formatText={()=>(''+this.state.currentlyLearningProgress*100+'%')}
               textStyle={styles.circlePercentText}
               borderWidth={2}
               thickness={5}
@@ -268,7 +269,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Museo Sans Rounded_500',
     color: '#ddcc19',
   },
-  textNeedMoreReview:{
+  textCurrentlyLearningiew:{
     fontSize: 19,
     fontFamily: 'Museo Sans Rounded_500',
     color: '#dd2800',
