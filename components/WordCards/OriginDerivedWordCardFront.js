@@ -13,21 +13,31 @@ export default class OriginDerivedWordCardFront extends Component {
 
   constructor(props) {
     super(props)
-    this.state = this.props.state;
+    // this.state = this.props.state;
   }
+
+  decideNextState(){
+    console.log("inside decision function");
+    if (this.props.state.type == 'origin')
+      this.props.flipCard();
+    else
+      this.props.seeMeaningForDerivedWord();
+  }
+
+
 
   render() {
     return (
       <View style={styles.front}>
         <View>
-          <Text style={styles.frontWord}>{this.state.word}</Text>
-          <Text style={styles.type}>({this.state.type})</Text>
+          <Text style={styles.frontWord}>{this.props.state.word}</Text>
+          <Text style={styles.type}>({this.props.state.type})</Text>
         </View>
-        <TouchableOpacity onPress={() => { let func = (this.state.type=='origin')?this.props.flipCard():this.props.seeMeaningForDerivedWord()}}>
-          <View style={styles.frontButton}>
-              <Text style={styles.frontButtonText}>Click to see meaning  ➜</Text>
-          </View>
-        </TouchableOpacity>
+      <TouchableOpacity onPress={() => { this.decideNextState() }}>
+        <View style={styles.frontButton}>
+            <Text style={styles.frontButtonText}>Click to see meaning  ➜</Text>
+        </View>
+      </TouchableOpacity>
       </View>
     );
   }

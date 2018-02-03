@@ -15,17 +15,17 @@ export default class DerivedWordCardBack extends Component {
 
   constructor(props) {
     super(props)
-    this.state = this.props.state;
+    // this.state = this.props.state;
   }
 
   getStatusColor = () => {
-    if(this.state.status == 'Viewed')                                 // Viewed and not one of the 3 other labels
+    if(this.props.state.status == 'Viewed')                                 // Viewed and not one of the 3 other labels
       return('#0372da');
-    else if(this.state.status == 'Mastered')                          // Mastered
+    else if(this.props.state.status == 'Mastered')                          // Mastered
       return('#3ed627');
-    else if(this.state.status == 'Currently Learning')                // Currently Learning
+    else if(this.props.state.status == 'Currently Learning')                // Currently Learning
       return('#d2c000');
-    else if(this.state.status == 'Need Review')                       // Need Review
+    else if(this.props.state.status == 'Need Review')                       // Need Review
       return('#dd2800');
   }
 
@@ -33,27 +33,27 @@ export default class DerivedWordCardBack extends Component {
     return (
       <View style={styles.back}>
         <View style={styles.backMainWordStyle}>
-          <Text style={styles.backMainWordText}>{this.state.word}</Text>
-          <TouchableOpacity onPress={() => { Tts.speak(this.state.word); }}>
+          <Text style={styles.backMainWordText}>{this.props.state.word}</Text>
+          <TouchableOpacity onPress={() => { Tts.speak(this.props.state.word); }}>
             <Text style={styles.backMainWordSpeechIcon}>🔊</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.backElements}>
           <Text style={[styles.backMainText,{fontSize : 20}]}>Origin word : </Text>
-          <Text style={[styles.backSubText,{fontSize : 20}]}>{this.state.originWord}</Text>
+          <Text style={[styles.backSubText,{fontSize : 20}]}>{this.props.state.originWord}</Text>
         </View>
         <View style={styles.backElements}>
           <Text style={[styles.backMainText,{fontSize : 20}]}>Meaning : </Text>
-          <Text style={[styles.backSubText,{fontSize : 20}]}>{this.state.meaning}</Text>
+          <Text style={[styles.backSubText,{fontSize : 20}]}>{this.props.state.meaning}</Text>
         </View>
         <View style={styles.backElements}>
           <Text style={[styles.backMainText,{fontSize : 20}]}>Example : </Text>
-          <Text style={[styles.backSubText,{fontSize : 20}]}>{this.state.example}</Text>
+          <Text style={[styles.backSubText,{fontSize : 20}]}>{this.props.state.example}</Text>
         </View>
         <View style={styles.backElements}>
           <Text style={[styles.backMainText,{fontSize : 20}]}>Status : </Text>
           <View style={[styles.wordStatusStyle,{backgroundColor:this.getStatusColor()}]}>
-            <Text style={styles.wordStatusText}>{this.state.status}</Text>
+            <Text style={styles.wordStatusText}>{this.props.state.status}</Text>
           </View>
         </View>
         <TouchableOpacity

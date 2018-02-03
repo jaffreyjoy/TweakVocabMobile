@@ -19,25 +19,12 @@ export default class ProgressCard extends Component {
   constructor(props) {
     super(props)
 
-    const { viewed , mastered, needRev, currentlyLearning,  totalWords } = this.props.state;
-
-    this.state = {
-      viewed: viewed,
-      viewedProgress: Math.round((viewed/totalWords)*100)/100,
-      mastered: mastered,
-      masteredProgress: Math.round((mastered/totalWords)*100)/100,
-      needRev: needRev,
-      needRevProgress: Math.round((needRev/totalWords)*100)/100,
-      currentlyLearning: currentlyLearning,
-      currentlyLearningProgress: Math.round((currentlyLearning/totalWords)*100)/100,
-      totalWords: totalWords,
-    };
 
   }
 
   animateProgressBar(){
-    let initialViewed = this.state.viewed;
-    let initialViewedProgress = this.state.viewedProgress;
+    let initialViewed = this.props.state.viewed;
+    let initialViewedProgress = this.props.state.viewedProgress;
     let targetViewedProgress = Math.floor((initialViewedProgress)*10)/10;
     let tempViewed = 0;
     let tempViewedProgress = 0.0;
@@ -52,7 +39,7 @@ export default class ProgressCard extends Component {
         this.setState({ viewedProgress :tempViewedProgress});
       }
     }, 120);
-    if(this.state.viewedProgress == targetViewedProgress && this.state.viewed == initialViewed) {
+    if(this.props.state.viewedProgress == targetViewedProgress && this.props.state.viewed == initialViewed) {
       clearInterval(intervalFlag);
       setTimeout(() => {
         this.setState({
@@ -65,15 +52,15 @@ export default class ProgressCard extends Component {
 
   animateProgressCircles(){
 
-    let initialMasteredProgress = this.state.masteredProgress;
+    let initialMasteredProgress = this.props.state.masteredProgress;
     let tempMasteredProgress = 0.0;
     let targetMasteredProgress = Math.floor((initialMasteredProgress)*10)/10;
 
-    let initialNeedRevProgress = this.state.needRevProgress;
+    let initialNeedRevProgress = this.props.state.needRevProgress;
     let tempNeedRevProgress = 0.0;
     let targetNeedRevProgress = Math.floor((initialNeedRevProgress)*10)/10;
 
-    let initialCurrentlyLearningProgress = this.state.currentlyLearningProgress;
+    let initialCurrentlyLearningProgress = this.props.state.currentlyLearningProgress;
     let tempCurrentlyLearningProgress = 0.0;
     let targetCurrentlyLearningProgress = Math.floor((initialCurrentlyLearningProgress)*10)/10;
 
@@ -85,9 +72,9 @@ export default class ProgressCard extends Component {
 
     setTimeout(() => {
       intervalFlag2 = setInterval(() => {
-        if(this.state.masteredProgress == targetMasteredProgress
-        && this.state.needRevProgress == targetNeedRevProgress
-        && this.state.currentlyLearningProgress == targetCurrentlyLearningProgress){
+        if(this.props.state.masteredProgress == targetMasteredProgress
+        && this.props.state.needRevProgress == targetNeedRevProgress
+        && this.props.state.currentlyLearningProgress == targetCurrentlyLearningProgress){
           console.log('2beforeclear');
           clearInterval(intervalFlag2);
           console.log('imaster '+initialMasteredProgress);
@@ -129,7 +116,7 @@ export default class ProgressCard extends Component {
       }, 200);
     },100);
   }
-  
+
   // componentDidMount() {
   //   this.animateProgressBar();
   //   this.animateProgressCircles();
@@ -140,10 +127,10 @@ export default class ProgressCard extends Component {
   render() {
     return (
       <View style={styles.progressCardContainer}>
-        <Text style={styles.viewedText}>Viewed {this.state.viewed} of {this.state.totalWords} words in this Deck</Text>
+        <Text style={styles.viewedText}>Viewed {this.props.state.viewed} of {this.props.state.totalWords} words in this Deck</Text>
         <Progress.Bar
           style={styles.progressBar}
-          progress={this.state.viewedProgress}
+          progress={this.props.state.viewedProgress}
           color='#0372da'
           width={320}
           height={12}
@@ -158,11 +145,11 @@ export default class ProgressCard extends Component {
               <Text style={styles.textMastered}>words</Text>
             </View>
             <Progress.Circle
-              progress={this.state.masteredProgress}
+              progress={this.props.state.masteredProgress}
               color='#3ed627'
               size={80}
               showsText={true}
-              formatText={()=>(''+this.state.masteredProgress*100+'%')}
+              formatText={()=>(''+this.props.state.masteredProgress*100+'%')}
               textStyle={styles.circlePercentText}
               borderWidth={2}
               thickness={5}
@@ -174,11 +161,11 @@ export default class ProgressCard extends Component {
               <Text style={styles.textNeedReview}>Learning</Text>
             </View>
               <Progress.Circle
-                progress={this.state.needRevProgress}
+                progress={this.props.state.needRevProgress}
                 color='#ddcc19'
                 size={80}
                 showsText={true}
-                formatText={()=>(''+this.state.needRevProgress*100+'%')}
+                formatText={()=>(''+this.props.state.needRevProgress*100+'%')}
                 textStyle={styles.circlePercentText}
                 borderWidth={2}
                 thickness={5}
@@ -190,11 +177,11 @@ export default class ProgressCard extends Component {
               <Text style={styles.textCurrentlyLearningiew}>Review</Text>
             </View>
             <Progress.Circle
-              progress={this.state.currentlyLearningProgress}
+              progress={this.props.state.currentlyLearningProgress}
               color='#dd2800'
               size={80}
               showsText={true}
-              formatText={()=>(''+this.state.currentlyLearningProgress*100+'%')}
+              formatText={()=>(''+this.props.state.currentlyLearningProgress*100+'%')}
               textStyle={styles.circlePercentText}
               borderWidth={2}
               thickness={5}

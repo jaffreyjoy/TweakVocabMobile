@@ -36,6 +36,7 @@ export default class Deck extends Component {
         [{ key: 1, word: 'lol' }],
         [{ key: 2, word: 'lol' }],
         [{ key: 3, word: 'lol' }]
+        [{ key: 4, word: 'lol' }]
       ]
     }
     // alert(unit+" "+chapter);
@@ -69,16 +70,14 @@ export default class Deck extends Component {
           // console.log('tempdecks = ' + tempDecks);
           var childDataArray = [];
 
-            console.log('over here mate');
+          console.log('over here mate');
           db.transaction((tx) => {
             console.log('inside transac');
             tx.executeSql('SELECT origin_word FROM origin WHERE unit=? AND chapter=? AND deck=?', [this.state.unit, this.state.chapter, i + 1], (tx,selectResult) => {
 
               console.log("inside callback " + i);
               tempArray.push('x');
-              this.setState({ noOfDecks: tempArray });
-              console.log("no of decks state = " + this.state.noOfDecks);
-              // console.log("no of decks state = " + this.state.noOfDecks);
+              // this.setState({ noOfDecks: tempArray });
               console.log('originwords select resultlength = ' + selectResult.rows.length);
               console.log('childArray = ' + childDataArray);
 
@@ -95,7 +94,8 @@ export default class Deck extends Component {
               console.log('set parent');
               parentDataArray.push(childDataArray);
               console.log('parent = ' + JSON.stringify(parentDataArray[i][0]));
-              this.setState({ origindata: parentDataArray });
+              this.setState({ noOfDecks: tempArray, origindata: parentDataArray });
+              console.log("no of decks state = " + this.state.noOfDecks);
               console.log('origindata = ' + this.state.origindata);
               console.log('origindata data = ' + JSON.stringify(this.state.origindata[i][0]));
 

@@ -22,25 +22,25 @@ export default class OriginWordCardBack extends Component {
     return (
       <View style={styles.back}>
         <View style={styles.backMainWordStyle}>
-          <Text style={styles.backMainWordText}>{this.state.word}</Text>
-          <TouchableOpacity onPress={() => { Tts.speak(this.state.word); }}>
+          <Text style={styles.backMainWordText}>{this.props.state.word}</Text>
+          <TouchableOpacity onPress={() => { Tts.speak(this.props.state.word); }}>
             <Text style={styles.backMainWordSpeechIcon}>🔊</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.backElements}>
           <Text style={styles.backMainText}>Origin : </Text>
-          <Text style={styles.backSubText}>{this.state.origin}</Text>
+          <Text style={styles.backSubText}>{this.props.state.origin}</Text>
         </View>
         <View style={styles.backElements}>
           <Text style={styles.backMainText}>Meaning : </Text>
-          <Text style={styles.backSubText}>{this.state.meaning}</Text>
+          <Text style={styles.backSubText}>{this.props.state.meaning}</Text>
         </View>
         <View style={styles.backElements}>
           <Text style={styles.backMainText}>Tip : </Text>
-          <Text style={styles.backSubText}>{this.state.tip}</Text>
+          <Text style={styles.backSubText}>{this.props.state.tip}</Text>
         </View>
         <TouchableOpacity
-          onPress={ () => { this.props.changeStatus('Viewed'); } }
+          onPress={() => { this.props.seeDerivedWords() } }
         >
           <View style={styles.backOriginButton}>
               <Text style={styles.backOriginButtonText}>Click to see derived words ➜</Text>
