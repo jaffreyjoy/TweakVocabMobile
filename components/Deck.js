@@ -8,17 +8,18 @@ import {
 } from 'react-native';
 
 import EZSwiper from 'react-native-ezswiper';
+//import { resolve } from 'url';
 
 const width = Dimensions.get('window').width;
 
 const height = Dimensions.get('window').height;
 
-let origindata = [{ key: '1', word: 'lol' }, { key: '2', word: 'gtg' }, { key: '3', word: 'ppl' }]
+var origindata = [{ key: '1', word: 'lol' }, { key: '2', word: 'gtg' }, { key: '3', word: 'ppl' }]
 
-let currentDeck = 0;
+var currentDeck = 0;
 
-let SQLite = require('react-native-sqlite-storage')
-let db = SQLite.openDatabase({ name: 'tweak-data.db',  location: 'default'});
+var SQLite = require('react-native-sqlite-storage')
+var db = SQLite.openDatabase({ name: 'tweak-data.db',  location: 'default'});
 
 export default class Deck extends Component {
 
@@ -43,59 +44,135 @@ export default class Deck extends Component {
 
   componentWillMount() {
     //get no of decks from the current chapter
-    let noOfDecks;
+    var noOfDecks;
     db.transaction((tx) => {
       tx.executeSql('SELECT COUNT(DISTINCT deck) AS noOfDecks FROM origin WHERE unit=? AND chapter=?', [this.state.unit,this.state.chapter], (tx, countResult) => {
+
         noOfDecks = countResult.rows.item(0).noOfDecks;
-        console.log(noOfDecks);
-        // this.setNoOfDecks(noOfDecks);
-        this.insertOriginData(noOfDecks);
-        // console.log('set parent');
-        // console.log('parent '+parentDataArray.toString());
-        // console.log('origindata '+this.state.origindata.toString());
-        // this.setState({origindata:parentDataArray});
+        console.log("no of decks = " + noOfDecks);
+
+        tempDecks = []
+        for (var k = 0; k < noOfDecks; k++) {
+          tempDecks.push(k);
+        }
+
+        var tempArray = [];
+        var parentDataArray = [];
+        // console.log('no of decks in insertorigin = ' + tempDecks.length);
+
+        // var promises = [];
+
+        tempDecks.forEach(i => {
+        // for (var i = 0; i < noOfDecks ; i++) {
+
+          console.log('i = ' + i);
+          // console.log('tempdecks = ' + tempDecks);
+          var childDataArray = [];
+
+            console.log('over here mate');
+          db.transaction((tx) => {
+            console.log('inside transac');
+            tx.executeSql('SELECT origin_word FROM origin WHERE unit=? AND chapter=? AND deck=?', [this.state.unit, this.state.chapter, i + 1], (tx,selectResult) => {
+
+              console.log("inside callback " + i);
+              tempArray.push('x');
+              this.setState({ noOfDecks: tempArray });
+              console.log("no of decks state = " + this.state.noOfDecks);
+              // console.log("no of decks state = " + this.state.noOfDecks);
+              console.log('originwords select resultlength = ' + selectResult.rows.length);
+              console.log('childArray = ' + childDataArray);
+
+              for (var j = 0; j < selectResult.rows.length; j++) {
+                console.log("originword push "+j);
+                console.log('child push');
+                childDataArray.push({
+                  key: j,
+                  word: selectResult.rows.item(j).origin_word,
+                });
+                console.log('after push childArray = ' + childDataArray);
+              }
+
+              console.log('set parent');
+              parentDataArray.push(childDataArray);
+              console.log('parent = ' + JSON.stringify(parentDataArray[i][0]));
+              this.setState({ origindata: parentDataArray });
+              console.log('origindata = ' + this.state.origindata);
+              console.log('origindata data = ' + JSON.stringify(this.state.origindata[i][0]));
+
+              childDataArray = [];
+
+            })
+            console.log('finished one db transaction')
+          })
+
+          console.log('for end');
+        })
       });
     });
+
+        // console.log("Promises: " + promises.length)
+
+        // var res = (promiseCount) => {
+        //   console.log("Processing promise " + promiseCount)
+        //   var result = promises[promiseCount].resolve();
+        //   promiseCount++;
+        //   if (promiseCount < promises.length) result.then(() => {
+        //     console.log("Finished " + (promiseCount-1))
+        //     res(promiseCount);
+        //   });
+        // };
+        // if (promises.length > 0) res(0);
+
     // this.insertOriginData(noOfDecks);
   }
 
-  insertOriginData = (noOfDecks) => {
-    let tempArray =[];
-    let parentDataArray = [];
-    console.log('no of decks in insertorigin '+noOfDecks);
-    for (let i = 0; i < noOfDecks; i++) {
-      console.log('here');
-      let childDataArray = []
-      db.executeSql('SELECT origin_word FROM origin WHERE unit=? AND chapter=? AND deck=?', [this.state.unit,this.state.chapter,i+1], (selectResult) => {
-      }).then(selectResult){
-          tempArray.push('');
-          this.setState({noOfDecks:tempArray});
-          console.log(this.state.unit);
-          console.log(this.state.chapter);
-          console.log(this.state.noOfDecks);
-          console.log('length '+selectResult.rows.length);
-          for (let j = 0; j < selectResult.length; j++) {
-            console.log('child push');
-            childDataArray.push({
-              key: j,
-              word: selectResult.rows.item(j).origin_word,
-            });
-          }
-          console.log('set parent');
-          parentDataArray.push(childDataArray);
-          console.log('parent '+parentDataArray);
-          this.setState({origindata:parentDataArray});
-          console.log('origindata '+this.state.origindata);
-        };
-      console.log('for end');
-    }
-  }
+  // insertOriginData = (tempDecks) => {
+  //   var tempArray =[];
+  //   var parentDataArray = [];
+  //   console.log('no of decks in insertorigin = '+tempDecks.length);
+  //   for (let i = 0; i<tempDecks.length ; i++) {
+  //     console.log('i = ' + i);
+  //     console.log('tempdecks = '+tempDecks);
+  //     var childDataArray = [];
+
+  //     // var promise = new Promise((resolve, reject) => {
+  //     //   resolve("done!")
+  //     // })
+  //     // await promise;
+
+  //     db.transaction((tx) => {
+  //       tx.executeSql('SELECT origin_word FROM origin WHERE unit=? AND chapter=? AND deck=?', [this.state.unit, this.state.chapter, i + 1], (selectResult) => {
+  //         console.log("inside callback");
+  //         tempArray.push('');
+  //         this.setState({ noOfDecks: tempArray });
+  //         console.log("no of decks state = " + this.state.noOfDecks);
+  //         console.log('originwords select resultlength = ' + selectResult.rows.length);
+  //         for (var j = 0; j < selectResult.rows.length; j++) {
+  //           console.log(j);
+  //           console.log('child push');
+  //           childDataArray.push({
+  //             key: j,
+  //             word: selectResult.rows.item(j).origin_word,
+  //           });
+  //         }
+  //         console.log('set parent');
+  //         parentDataArray.push(childDataArray);
+  //         console.log('parent = '+JSON.stringify(parentDataArray[0][0]));
+  //         this.setState({origindata:parentDataArray});
+  //         console.log('origindata = '+this.state.origindata);
+  //       })
+  //     })
+  //     console.log('for end');
+  //   }
+
+  // }
+
 
   //set 'x' no of decks for ezswiper to generate 'x' no of cards
   setNoOfDecks(noOfDecks){
     console.log('no of decks'+noOfDecks);
     tempArray =[];
-    for (let i = 0; i < noOfDecks; i++) {
+    for (var i = 0; i < noOfDecks; i++) {
       console.log(i+' add deck');
       tempArray.push(' ');
     }
@@ -106,18 +183,30 @@ export default class Deck extends Component {
 
   //return origin words in a deck as a component
   renderOriginw(index) {
-    return this.state.origindata[index].map(ogdata => (
-      <Text key={ogdata.key} style={styles.originList}>{ogdata.word}</Text>
-    ));
-  // return origindata.map(ogdata => (
-  //     <Text key={ogdata.key} style={styles.originList}>{ogdata.word}</Text>
-  //   ));
+    console.log("renderOgWord origindata = " + this.state.origindata[index])
+    allWords = []
+    for (i in this.state.origindata[index]){
+      var { key , word } = this.state.origindata[index][i]
+      allWords.push(<Text key={key} style={styles.originList}>{word}</Text>);
+    }
+    return(allWords);
+
+    // return this.state.origindata[index].map(ogdata => (
+    //   <Text key={ogdata.key} style={styles.originList}>{ogdata.word}</Text>
+    // ));
+
+    // return origindata.map(ogdata => (
+    //     <Text key={ogdata.key} style={styles.originList}>{ogdata.word}</Text>
+    //   ));
   }
 
   // return single deck card components with data
   renderRow = (obj, index) => {
-    let comp;
-    let finalcomp;
+
+    console.log("inside renderRow");
+
+    var comp;
+    var finalcomp;
     originWordsList = this.renderOriginw(index);
 
     finalcomp =
@@ -215,9 +304,10 @@ const styles = StyleSheet.create({
   },
   originList:{
     fontFamily: 'Museo Sans Rounded_500',
-    fontSize: 18,
+    fontSize: 20,
     margin: 3,
-    color: '#000000'
+    color: '#000000',
+    alignSelf: 'center'
   },
   deckButtonView: {
     flex: 1,
@@ -230,7 +320,6 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingLeft: 20,
     paddingRight: 20,
-    marginTop: 15,
     marginBottom: 25,
     backgroundColor: '#2a8fe7',
     alignItems: 'center',
