@@ -149,7 +149,7 @@ export default class ProgressCard extends Component {
               color='#3ed627'
               size={80}
               showsText={true}
-              formatText={()=>(''+this.props.state.masteredProgress*100+'%')}
+              formatText={() => ('' + Math.floor(this.props.state.masteredProgress*100)+'%')}
               textStyle={styles.circlePercentText}
               borderWidth={2}
               thickness={5}
@@ -165,7 +165,7 @@ export default class ProgressCard extends Component {
                 color='#ddcc19'
                 size={80}
                 showsText={true}
-                formatText={() => ('' + this.props.state.currentlyLearningProgress * 100 + '%')}
+                formatText={() => ('' + Math.floor(this.props.state.currentlyLearningProgress * 100) + '%')}
                 textStyle={styles.circlePercentText}
                 borderWidth={2}
                 thickness={5}
@@ -181,7 +181,7 @@ export default class ProgressCard extends Component {
               color='#dd2800'
               size={80}
               showsText={true}
-              formatText={() => ('' + this.props.state.needRevProgress * 100 + '%')}
+              formatText={() => ('' + Math.floor(this.props.state.needRevProgress * 100) + '%')}
               textStyle={styles.circlePercentText}
               borderWidth={2}
               thickness={5}
