@@ -19,7 +19,7 @@ var origindata = [{ key: '1', word: 'lol' }, { key: '2', word: 'gtg' }, { key: '
 var currentDeck = 0;
 
 var SQLite = require('react-native-sqlite-storage')
-var db = SQLite.openDatabase({ name: 'tweak-data.db',  location: 'default'});
+var db = SQLite.openDatabase({ name: 'tweak-datax.db', createFromLocation: '~storage/tweak.db' });
 
 export default class Deck extends Component {
 

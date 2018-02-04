@@ -17,7 +17,7 @@ import OriginWordCardBack from './OriginWordCardBack';
 import DerivedWordCardBack from './DerivedWordCardBack';
 
 var SQLite = require('react-native-sqlite-storage')
-var db = SQLite.openDatabase({ name: 'tweak-data.db',  location: 'default'});
+var db = SQLite.openDatabase({ name: 'tweak-datax.db', createFromLocation: '~storage/tweak.db' });
 
 export default class Word extends Component {
 
