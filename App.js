@@ -75,24 +75,40 @@ export default class App extends Component {
     //   });
     // });
 
+    // db.transaction((tx) => {
+    //   tx.executeSql('UPDATE origin SET viewed=0', [], (tx, updateResult) => {
+    //   });
+    // });
+
+    // db.transaction((tx) => {
+    //   tx.executeSql('UPDATE derived SET viewed=0,status=0', [], (tx, updateResult) => {
+    //   });
+    // });
+
     db.transaction((tx) => {
       tx.executeSql('SELECT * FROM current WHERE unit=? AND chapter=? AND deck=?', [1,1,1], (tx, selectResult) => {
         // let countr = selectResult.rows.item(0).countr;
-        let id = selectResult.rows.item(0).id;
-        let word = selectResult.rows.item(0).word;
-        let type = selectResult.rows.item(0).type;
-        let unit = selectResult.rows.item(0).unit;
-        let chapter = selectResult.rows.item(0).chapter;
-        let deck = selectResult.rows.item(0).deck;
-        let mode = selectResult.rows.item(0).mode;
-        // console.log(countr);
-        console.log(id);
-        console.log(deck);
-        console.log(word);
-        console.log(type);
-        console.log(unit);
-        console.log(chapter);
-        console.log(mode);
+        if(selectResult.rows.length>0){
+          let id = selectResult.rows.item(0).id;
+          let word = selectResult.rows.item(0).word;
+          let type = selectResult.rows.item(0).type;
+          let unit = selectResult.rows.item(0).unit;
+          let chapter = selectResult.rows.item(0).chapter;
+          let deck = selectResult.rows.item(0).deck;
+          let mode = selectResult.rows.item(0).mode;
+          // console.log(countr);
+          console.log(id);
+          console.log(deck);
+          console.log(word);
+          console.log(type);
+          console.log(unit);
+          console.log(chapter);
+          console.log(mode);
+        }
+        else{
+          console.log('current table empty');
+        }
+
       });
     });
 

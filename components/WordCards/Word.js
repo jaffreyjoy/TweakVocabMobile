@@ -98,66 +98,80 @@ export default class Word extends Component {
         ],
         (tx, result) => {
           if(result.rows.length>0) {                         //entry exists
-            console.log("entry exists");
-            //so get word and its type
-            this.setState({
-              mode: result.rows.item(0).mode,
-              word: result.rows.item(0).word,
-              type: result.rows.item(0).type,
-            });
-            console.log("current word = " + this.state.word);
-            //get full details of the word
-            if(this.state.type == 'origin') {     // if word type is origin get details of the origin word
-              db.transaction((tx) => {
-                console.log("get details of the origin word");
-                tx.executeSql('SELECT * FROM origin WHERE origin_word=? AND unit=? AND chapter=? AND deck=? LIMIT 1', [
-                  this.state.word,
-                  this.state.unit,
-                  this.state.chapter,
-                  this.state.deck
-                ],
-                (tx, selectResult) => {
-                  console.log("select for origindata done");
-                  this.setState({
-                    word: selectResult.rows.item(0).origin_word,
-                    origin: selectResult.rows.item(0).origin,
-                    meaning: selectResult.rows.item(0).meaning,
-                    tip: selectResult.rows.item(0).tip,
-                  })
-                  console.log("set state for origindata done");
-                  // get and set data for progress card
-                  this.getNsetDataforProgressCard();
-                },function(error){
-                  console.log("select error = "+error);
-                });
+            if(result.rows.item(0).mode == 1){
+              console.log("entry exists");
+              console.log("deck completed");
+              //navigate to completed deck page
+              this.props.navigation.navigate('DeckComplete', {
+                navigation: this.state.navigation,
+                unit: this.state.unit,
+                chapter: this.state.chapter,
+                deck: this.state.deck,
               });
             }
-            else{                         // if word type is derived get details of the derived word
-              db.transaction((tx) => {
-                console.log("get details of the derived word");
-                tx.executeSql('SELECT * FROM derived WHERE derived_word = ? AND unit=? AND chapter=? AND deck=? LIMIT 1', [
-                  this.state.word,
-                  this.state.unit,
-                  this.state.chapter,
-                  this.state.deck
-                ],
-                (tx, selectResult) => {
-                  console.log("select for derived data done");
-                  this.setState({
-                    wordId: selectResult.rows.item(0).id,
-                    word: selectResult.rows.item(0).derived_word,
-                    originWord: selectResult.rows.item(0).origin_w,
-                    meaning: selectResult.rows.item(0).meaning,
-                    example: selectResult.rows.item(0).example,
-                    viewedFlag: selectResult.rows.item(0).viewed,
-                    statusFlag: selectResult.rows.item(0).status,
-                  });
-                  console.log("set state for derived data done");
-                   this.setStatusFromFetchedData();
-                   // get and set data for progress card
-                   this.getNsetDataforProgressCard();
-                });
+            else{
+              console.log("entry exists");
+              console.log("deck not completed");
+              //so get word and its type and the current mode
+              this.setState({
+                mode: result.rows.item(0).mode,
+                word: result.rows.item(0).word,
+                type: result.rows.item(0).type,
               });
+              console.log("current word = " + this.state.word);
+              //get full details of the word
+              if(this.state.type == 'origin') {     // if word type is origin get details of the origin word
+                db.transaction((tx) => {
+                  console.log("get details of the origin word");
+                  tx.executeSql('SELECT * FROM origin WHERE origin_word=? AND unit=? AND chapter=? AND deck=? LIMIT 1', [
+                    this.state.word,
+                    this.state.unit,
+                    this.state.chapter,
+                    this.state.deck
+                  ],
+                  (tx, selectResult) => {
+                    console.log("select for origindata done");
+                    this.setState({
+                      word: selectResult.rows.item(0).origin_word,
+                      origin: selectResult.rows.item(0).origin,
+                      meaning: selectResult.rows.item(0).meaning,
+                      tip: selectResult.rows.item(0).tip,
+                    })
+                    console.log("set state for origindata done");
+                    // get and set data for progress card
+                    this.getNsetDataforProgressCard();
+                  },function(error){
+                    console.log("select error = "+error);
+                  });
+                });
+              }
+              else{                         // if word type is derived get details of the derived word
+                db.transaction((tx) => {
+                  console.log("get details of the derived word");
+                  tx.executeSql('SELECT * FROM derived WHERE derived_word = ? AND unit=? AND chapter=? AND deck=? LIMIT 1', [
+                    this.state.word,
+                    this.state.unit,
+                    this.state.chapter,
+                    this.state.deck
+                  ],
+                  (tx, selectResult) => {
+                    console.log("select for derived data done");
+                    this.setState({
+                      wordId: selectResult.rows.item(0).id,
+                      word: selectResult.rows.item(0).derived_word,
+                      originWord: selectResult.rows.item(0).origin_w,
+                      meaning: selectResult.rows.item(0).meaning,
+                      example: selectResult.rows.item(0).example,
+                      viewedFlag: selectResult.rows.item(0).viewed,
+                      statusFlag: selectResult.rows.item(0).status,
+                    });
+                    console.log("set state for derived data done");
+                    this.setStatusFromFetchedData();
+                    // get and set data for progress card
+                    this.getNsetDataforProgressCard();
+                  });
+                });
+              }
             }
           }
           else{                               //entry doesn't exist so get the first origin word of the deck
@@ -279,6 +293,7 @@ export default class Word extends Component {
       (tx, selectResult) => {
         console.log("got totalwords");
         this.setState({totalWords: selectResult.rows.item(0).noOfTotalWords});
+        console.log("totalwords"+this.state.totalWords);
       });
     });
     db.transaction((tx) => {
@@ -291,7 +306,9 @@ export default class Word extends Component {
       (tx, selectResult) => {
         console.log("got viewed words");
         this.setState({viewed: selectResult.rows.item(0).noOfViewed});
+        console.log("viewed = " + this.state.viewed);
         this.setState({ viewedProgress: Math.round((this.state.viewed / this.state.totalWords) * 100) / 100 });
+        console.log("viewed progress = " + this.state.viewedProgress);
       });
     });
     db.transaction((tx) => {
@@ -304,7 +321,9 @@ export default class Word extends Component {
       (tx, selectResult) => {
         console.log("got mastered words");
         this.setState({mastered: selectResult.rows.item(0).noOfMastered});
+        console.log("mastered = " + this.state.mastered);
         this.setState({ masteredProgress: Math.round((this.state.mastered / this.state.totalWords) * 100) / 100});
+        console.log("mastered progress= " + this.state.masteredProgress);
       });
     });
     db.transaction((tx) => {
@@ -317,12 +336,14 @@ export default class Word extends Component {
       (tx, selectResult) => {
         console.log("got currently learning words");
         this.setState({currentlyLearning: selectResult.rows.item(0).noOfCurrentlyLearning});
+        console.log("currentlyLearning = " + this.state.currentlyLearning);
         this.setState({ currentlyLearningProgress: Math.round((this.state.currentlyLearning / this.state.totalWords) * 100) / 100});
+        console.log("currentlyLearning progress = " + this.state.currentlyLearningProgress);
       });
     });
     db.transaction((tx) => {
       console.log("to get need review words");
-      tx.executeSql('SELECT COUNT(*) as noOfNeedReview FROM derived WHERE status=2 AND unit=? AND chapter=? AND deck=?', [
+      tx.executeSql('SELECT COUNT(*) as noOfNeedReview FROM derived WHERE status=3 AND unit=? AND chapter=? AND deck=?', [
         this.state.unit,
         this.state.chapter,
         this.state.deck
@@ -330,7 +351,9 @@ export default class Word extends Component {
       (tx, selectResult) => {
         console.log("got need review words");
         this.setState({needRev: selectResult.rows.item(0).noOfNeedReview});
+        console.log("need review = "+this.state.needRev);
         this.setState({ needRevProgress: Math.round((this.state.needRev / this.state.totalWords) * 100) / 100});
+        console.log("need review progress= " + this.state.needRevProgress);
       });
     });
   }
@@ -347,11 +370,11 @@ export default class Word extends Component {
           this.state.word,
         ],
           (tx, updateResult) => {
-            this.setState({
-              viewed: this.state.viewed + 1,              //increment viewed count in state
-              viewedFlag: 1,                              //set viewedFlag to one
-              status: 'Viewed'                            //set status to viewed in state
-            });
+            // this.setState({
+            //   viewed: this.state.viewed + 1,              //increment viewed count in state
+            //   viewedFlag: 1,                              //set viewedFlag to one
+            //   status: 'Viewed'                            //set status to viewed in state
+            // });
             this.initialDataFetch();
             this.flipCard();
           });
@@ -365,9 +388,10 @@ export default class Word extends Component {
   }
 
   changeStatusAndFetchNext = (newStatus) => {
-
+    console.log("new status = "+newStatus);
     if(newStatus == 'Mastered') {
       if(this.state.status == 'Viewed' || this.state.status == 'Currently Learning'){
+        console.log("update to mastered");
         //update new status to mastered
         db.transaction((tx) => {
           //change database value of status to 1 i.e. mastered
@@ -378,11 +402,13 @@ export default class Word extends Component {
             this.state.word,
           ],
             (tx, updateResult) => {
+              console.log("update to mastered success");
             });
         });
       }
       else if(this.state.status == 'Need Review'){
         //update status to currrently learning
+        console.log("update to currrently learning");
         db.transaction((tx) => {
           //change database value of status to 2 i.e. currently learning
           tx.executeSql('UPDATE derived SET status=2 WHERE unit=? AND chapter=? AND deck=? AND derived_word=?', [
@@ -392,18 +418,22 @@ export default class Word extends Component {
             this.state.word,
           ],
             (tx, updateResult) => {
+              console.log("update to currently learning success");
             });
         });
       }
     }
-    else if(newStatus == 'Need Review'){
+    else {
+      console.log("inside need review conditional statement");
       if(this.state.status == 'Need Review'){
+        console.log("already need review no need to update");
         //no need to update
       }
-      else{
+      else {
         //update status to need review
+        console.log("update to need review ");
         db.transaction((tx) => {
-          //change database value of viewed to 1
+          //change database value of status to 3 i.e. need review
           tx.executeSql('UPDATE derived SET status=3 WHERE unit=? AND chapter=? AND deck=? AND derived_word=?', [
             this.state.unit,
             this.state.chapter,
@@ -411,6 +441,7 @@ export default class Word extends Component {
             this.state.word,
           ],
             (tx, updateResult) => {
+              console.log("update to need review success");
             });
         });
       }
@@ -428,7 +459,7 @@ export default class Word extends Component {
           this.state.wordId,
         ],
           (tx, selectResult) => {
-            if(selectResult.rows.length > 0){
+            if(selectResult.rows.length > 0){      // another derived word of the same origin word is present
               let word = selectResult.rows.item(0).derived_word;
               //update current table
               db.transaction((tx) => {
@@ -459,7 +490,7 @@ export default class Word extends Component {
                       //update current table with next origin word
                       db.transaction((tx) => {
                         tx.executeSql('UPDATE current SET word=?,type=? WHERE unit=? AND chapter=? AND deck=?', [
-                          selectCheckResult.rows.item(0).origin_word,
+                          selectCheckResult.rows.item(0).origin_w,
                           'origin',
                           this.state.unit,
                           this.state.chapter,
@@ -503,7 +534,10 @@ export default class Word extends Component {
                           else{
                             //select word with max status where status > 1
                             db.transaction((tx) => {
-                              tx.executeSql('SELECT derived_word FROM derived WHERE status=(SELECT MAX(status) FROM derived WHERE unit=? AND chapter=? AND deck=?) LIMIT 1', [
+                              tx.executeSql('SELECT derived_word FROM derived WHERE status=(SELECT MAX(status) FROM derived WHERE unit=? AND chapter=? AND deck=? AND status>1) AND unit=? AND chapter=? AND deck=? LIMIT 1', [
+                                this.state.unit,
+                                this.state.chapter,
+                                this.state.deck,
                                 this.state.unit,
                                 this.state.chapter,
                                 this.state.deck
@@ -547,9 +581,8 @@ export default class Word extends Component {
           this.state.deck
         ],
         (tx, selectMasteredResult) => {
-          //if yes
-          //navigate to deck mastered page
-          if(selectMasteredResult.rows.item(0).noOfMastered == this.state.totalWords){
+          if (selectMasteredResult.rows.item(0).noOfMastered == this.state.totalWords) {
+            //if yes
             //update current table mode to 1
             db.transaction((tx) => {
               tx.executeSql('UPDATE current SET mode=1 WHERE unit=? AND chapter=? AND deck=?', [
@@ -558,7 +591,7 @@ export default class Word extends Component {
                 this.state.deck,
               ],
                 (tx, updateResult) => {
-                  //navigate to completed deck page
+                  //navigate to deck mastered page
                   this.props.navigation.navigate('DeckComplete', {
                     navigation: this.state.navigation,
                     unit: this.state.unit,
@@ -585,7 +618,7 @@ export default class Word extends Component {
               (tx, selectReShowResult) => {
                 if(selectReShowResult.rows.length > 0){
                   //if word found
-                  //update current table with word to be reshown and update mode to reshow i.e 0
+                  //update current table with word to be reshown
                   db.transaction((tx) => {
                     tx.executeSql('UPDATE current SET word=?,type=? WHERE unit=? AND chapter=? AND deck=?', [
                       selectReShowResult.rows.item(0).derived_word,
@@ -641,10 +674,6 @@ export default class Word extends Component {
         });
       });
     }
-
-    // this.setState({ status: newStatus });
-    // // alert(newStatus);
-    // this.flipCard();
   }
 
 

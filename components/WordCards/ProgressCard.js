@@ -161,11 +161,11 @@ export default class ProgressCard extends Component {
               <Text style={styles.textNeedReview}>Learning</Text>
             </View>
               <Progress.Circle
-                progress={this.props.state.needRevProgress}
+              progress={this.props.state.currentlyLearningProgress}
                 color='#ddcc19'
                 size={80}
                 showsText={true}
-                formatText={()=>(''+this.props.state.needRevProgress*100+'%')}
+                formatText={() => ('' + this.props.state.currentlyLearningProgress * 100 + '%')}
                 textStyle={styles.circlePercentText}
                 borderWidth={2}
                 thickness={5}
@@ -177,11 +177,11 @@ export default class ProgressCard extends Component {
               <Text style={styles.textCurrentlyLearningiew}>Review</Text>
             </View>
             <Progress.Circle
-              progress={this.props.state.currentlyLearningProgress}
+              progress={this.props.state.needRevProgress}
               color='#dd2800'
               size={80}
               showsText={true}
-              formatText={()=>(''+this.props.state.currentlyLearningProgress*100+'%')}
+              formatText={() => ('' + this.props.state.needRevProgress * 100 + '%')}
               textStyle={styles.circlePercentText}
               borderWidth={2}
               thickness={5}
