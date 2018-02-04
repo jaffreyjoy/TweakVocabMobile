@@ -296,7 +296,7 @@ export default class Deck extends Component {
         <EZSwiper style={[styles.swiper, { width: width, height: height/2 }]}
           dataSource={this.state.noOfDecks}
           width={width}
-          height={height/2.2}
+          height={height/2}
           renderRow={this.renderRow}
           onDidChange={this.onDidChange}
           ratio={0.7}

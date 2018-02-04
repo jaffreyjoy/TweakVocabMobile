@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   frontWord:{
     marginTop: 50,
     fontFamily: 'Museo Sans Rounded_500',
-    fontSize: 40,
+    fontSize: 37,
     color: '#001b54',
   },
   type:{

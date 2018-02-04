@@ -132,7 +132,7 @@ export default class ProgressCard extends Component {
           style={styles.progressBar}
           progress={this.props.state.viewedProgress}
           color='#0372da'
-          width={320}
+          width={300}
           height={12}
           borderRadius={12}
           borderWidth={2.5}

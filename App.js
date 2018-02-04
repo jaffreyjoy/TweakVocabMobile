@@ -52,7 +52,7 @@ export default class App extends Component {
 
     // setTimeout(function(){
     //   console.log('delete here');
-    //   SQLite.deleteDatabase({ name: 'tweak-data.db', location: 'default' });
+    //   SQLite.deleteDatabase({ name: 'tweak-datax.db', location: 'default' });
     // },2000);
 
 
