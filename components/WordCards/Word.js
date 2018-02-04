@@ -307,7 +307,7 @@ export default class Word extends Component {
         console.log("got viewed words");
         this.setState({viewed: selectResult.rows.item(0).noOfViewed});
         console.log("viewed = " + this.state.viewed);
-        this.setState({ viewedProgress: Math.round((this.state.viewed / this.state.totalWords) * 100) / 100 });
+        this.setState({ viewedProgress: Math.floor((this.state.viewed / this.state.totalWords) * 100) / 100 });
         console.log("viewed progress = " + this.state.viewedProgress);
       });
     });
@@ -322,7 +322,7 @@ export default class Word extends Component {
         console.log("got mastered words");
         this.setState({mastered: selectResult.rows.item(0).noOfMastered});
         console.log("mastered = " + this.state.mastered);
-        this.setState({ masteredProgress: Math.round((this.state.mastered / this.state.totalWords) * 100) / 100});
+        this.setState({ masteredProgress: Math.floor((this.state.mastered / this.state.totalWords) * 100) / 100});
         console.log("mastered progress= " + this.state.masteredProgress);
       });
     });
@@ -337,7 +337,7 @@ export default class Word extends Component {
         console.log("got currently learning words");
         this.setState({currentlyLearning: selectResult.rows.item(0).noOfCurrentlyLearning});
         console.log("currentlyLearning = " + this.state.currentlyLearning);
-        this.setState({ currentlyLearningProgress: Math.round((this.state.currentlyLearning / this.state.totalWords) * 100) / 100});
+        this.setState({ currentlyLearningProgress: Math.floor((this.state.currentlyLearning / this.state.totalWords) * 100) / 100});
         console.log("currentlyLearning progress = " + this.state.currentlyLearningProgress);
       });
     });
@@ -352,7 +352,7 @@ export default class Word extends Component {
         console.log("got need review words");
         this.setState({needRev: selectResult.rows.item(0).noOfNeedReview});
         console.log("need review = "+this.state.needRev);
-        this.setState({ needRevProgress: Math.round((this.state.needRev / this.state.totalWords) * 100) / 100});
+        this.setState({ needRevProgress: Math.floor((this.state.needRev / this.state.totalWords) * 100) / 100});
         console.log("need review progress= " + this.state.needRevProgress);
       });
     });
