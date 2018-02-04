@@ -228,11 +228,47 @@ export default class Deck extends Component {
 
   onPressDeckButton = () => {
     // alert('Practise Deck '+currentDeck);
-    this.props.navigation.navigate('Word', {
-      navigation: this.state.navigation,
-      unit: this.state.unit,
-      chapter: this.state.chapter,
-      deck: currentDeck + 1,
+    db.transaction((tx) => {
+      console.log("inside check for deck complete in deck page");
+      // this.setState({ word : "lol" });
+      tx.executeSql('SELECT * FROM current WHERE unit=? AND chapter=? AND deck=?', [
+        this.state.unit,
+        this.state.chapter,
+        currentDeck+1,
+      ],
+        (tx, result) => {
+          console.log("successfully executed select for current in deck page")
+          if (result.rows.length > 0) {                         //entry exists
+            if (result.rows.item(0).mode == 1) {
+              console.log("entry exists in deck page");
+              console.log("deck completed in deck page");
+              //navigate to completed deck page
+              this.props.navigation.navigate('DeckComplete', {
+                navigation: this.state.navigation,
+                unit: this.state.unit,
+                chapter: this.state.chapter,
+                deck: currentDeck + 1,
+              });
+            }
+            else{
+              this.props.navigation.navigate('Word', {
+                navigation: this.state.navigation,
+                unit: this.state.unit,
+                chapter: this.state.chapter,
+                deck: currentDeck + 1,
+              });
+            }
+          }
+          else{
+
+            this.props.navigation.navigate('Word', {
+              navigation: this.state.navigation,
+              unit: this.state.unit,
+              chapter: this.state.chapter,
+              deck: currentDeck + 1,
+            });
+          }
+      });
     });
   }
 
