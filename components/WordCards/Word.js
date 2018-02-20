@@ -1,3 +1,8 @@
+/**
+  * Author : Jaffrey Joy
+  * Copyright (c) 2018 All Rights Reserved
+**/
+
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -9,7 +14,8 @@ import {
 
 const width = Dimensions.get('window').width;
 
-import FlipCard from 'react-native-flip-card';
+import FlipCard from '../../node_modules_custom/react-native-flip-card';
+// import FlipCard from 'react-native-flip-card';
 
 import OriginDerivedWordCardFront from './OriginDerivedWordCardFront';
 import ProgressCard from './ProgressCard';

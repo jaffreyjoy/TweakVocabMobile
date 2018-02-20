@@ -1,3 +1,8 @@
+/**
+  * Author : Jaffrey Joy
+  * Copyright (c) 2018 All Rights Reserved
+**/
+
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -7,8 +12,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import EZSwiper from 'react-native-ezswiper';
-//import { resolve } from 'url';
+import EZSwiper from '../node_modules_custom/react-native-ezswiper';
+// import EZSwiper from 'react-native-ezswiper';
 
 const width = Dimensions.get('window').width;
 
@@ -110,62 +115,7 @@ export default class Deck extends Component {
       });
     });
 
-        // console.log("Promises: " + promises.length)
-
-        // var res = (promiseCount) => {
-        //   console.log("Processing promise " + promiseCount)
-        //   var result = promises[promiseCount].resolve();
-        //   promiseCount++;
-        //   if (promiseCount < promises.length) result.then(() => {
-        //     console.log("Finished " + (promiseCount-1))
-        //     res(promiseCount);
-        //   });
-        // };
-        // if (promises.length > 0) res(0);
-
-    // this.insertOriginData(noOfDecks);
   }
-
-  // insertOriginData = (tempDecks) => {
-  //   var tempArray =[];
-  //   var parentDataArray = [];
-  //   console.log('no of decks in insertorigin = '+tempDecks.length);
-  //   for (let i = 0; i<tempDecks.length ; i++) {
-  //     console.log('i = ' + i);
-  //     console.log('tempdecks = '+tempDecks);
-  //     var childDataArray = [];
-
-  //     // var promise = new Promise((resolve, reject) => {
-  //     //   resolve("done!")
-  //     // })
-  //     // await promise;
-
-  //     db.transaction((tx) => {
-  //       tx.executeSql('SELECT origin_word FROM origin WHERE unit=? AND chapter=? AND deck=?', [this.state.unit, this.state.chapter, i + 1], (selectResult) => {
-  //         console.log("inside callback");
-  //         tempArray.push('');
-  //         this.setState({ noOfDecks: tempArray });
-  //         console.log("no of decks state = " + this.state.noOfDecks);
-  //         console.log('originwords select resultlength = ' + selectResult.rows.length);
-  //         for (var j = 0; j < selectResult.rows.length; j++) {
-  //           console.log(j);
-  //           console.log('child push');
-  //           childDataArray.push({
-  //             key: j,
-  //             word: selectResult.rows.item(j).origin_word,
-  //           });
-  //         }
-  //         console.log('set parent');
-  //         parentDataArray.push(childDataArray);
-  //         console.log('parent = '+JSON.stringify(parentDataArray[0][0]));
-  //         this.setState({origindata:parentDataArray});
-  //         console.log('origindata = '+this.state.origindata);
-  //       })
-  //     })
-  //     console.log('for end');
-  //   }
-
-  // }
 
 
   //set 'x' no of decks for ezswiper to generate 'x' no of cards

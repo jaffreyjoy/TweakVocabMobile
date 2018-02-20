@@ -1,11 +1,9 @@
+/**
+  * Author : Jaffrey Joy
+  * Copyright (c) 2018 All Rights Reserved
+**/
+
 import React, { Component } from 'react';
-import {
-  AppRegistry,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
 
 var SQLite = require('react-native-sqlite-storage')
 // var db = SQLite.openDatabase({ name: 'tweak.db', createFromLocation: '~storage/tweak.db'});
@@ -14,35 +12,12 @@ var db = SQLite.openDatabase({ name: 'tweak-datax.db', createFromLocation: '~sto
 
 import { StackNavigator } from 'react-navigation';
 
-import Chapter from './components/Chapter';
+import { Actions, Router, Scene } from 'react-native-router-flux';
+
+import VocabHome from './components/VocabHome';
 import Deck from './components/Deck';
 import Word from './components/WordCards/Word';
 import DeckComplete from './components/WordCards/DeckComplete';
-
-class Home extends Component {
-
-  static navigationOptions = {
-    title: '⌘  Units',
-    headerStyle: {
-      backgroundColor: '#00232d',
-    },
-    headerTitleStyle: {
-      color: '#88bfff',
-      fontSize: 20,
-      fontWeight: '300'
-    }
-  };
-
-  render() {
-    return (
-      <ScrollView style={styles.scrollContainer}>
-        <View style={styles.chapterContainer}>
-          <Chapter navigation={this.props.navigation}/>
-        </View>
-      </ScrollView>
-    );
-  }
-}
 
 
 export default class App extends Component {
@@ -125,26 +100,124 @@ export default class App extends Component {
 
   }
 
+  showBackArrow(dest) {
+    if (dest != 'nope')
+      return (
+        <TouchableOpacity onPress={() => { Actions[dest](); }}>
+          <Text style={{
+            color: '#88bfff',              // back arrow color
+            fontSize: 22,
+            transform: [{ rotate: '180deg' }],
+            marginTop: 5,
+            paddingLeft: 20,
+            paddingRight: 20,
+          }}>
+            ➔
+          </Text>
+        </TouchableOpacity>
+      )
+  }
+
+  renderTitle(source) {
+    return (
+
+      <Text style={{
+        color: '#88bfff',                // title color
+        fontSize: 20,
+        fontWeight: '500',
+        padding: 20
+      }}>
+        {source}
+      </Text>
+    )
+  }
+
+  createNavBar(source, dest) {
+    return (
+      <View style={{
+        height: height / 12,
+        flexDirection: 'row',
+        backgroundColor: '#00232d',       // navbar color
+        alignItems: 'center',
+        elevation: 3,
+      }}
+      >
+        {this.showBackArrow(dest)}
+        {this.renderTitle(source)}
+      </View>
+    )
+  }
+
+
   render() {
     return (
-      <Screens/>
+      <Router>
+        <Scene key="root">
+
+          <Scene key="vocabHome"
+            component={VocabHome}
+            title="Units"
+            //custom navbar ⭝
+            navBar={() => this.createNavBar('Units', 'nope')} //params => (sourcePage,destinationPage/nope)
+            initial={true}
+          />
+
+          <Scene key="deck"
+            component={Deck}
+            title="Deck"
+            //to change color of back arrow change color value in backButtonTintColor (don't delete backButtonTextStyle as backarrow falls back to default color on doing that)
+            //(i have no clue why)
+            backButtonTextStyle={{}}
+            backButtonTintColor='#88bfff'              //backArrowColor
+            titleStyle={{
+              color: '#88bfff'                         //title color
+            }}
+            navigationBarStyle={{
+              backgroundColor: '#00232d',           //navbar color
+            }}
+          />
+
+          <Scene key="word"
+            component={Word}
+            title="Word"
+            //to change color of back arrow change color value in backButtonTintColor (don't delete backButtonTextStyle as backarrow falls back to default color on doing that)
+            //(i have no clue why)
+            backButtonTextStyle={{}}
+            backButtonTintColor='#88bfff'              //backArrowColor
+            titleStyle={{
+              color: '#88bfff'                         //title color
+            }}
+            navigationBarStyle={{
+              backgroundColor: '#00232d',           //navbar color
+            }}
+          />
+
+          <Scene key="deckComplete"
+            component={DeckComplete}
+            title="DeckComplete"
+            //to change color of back arrow change color value in backButtonTintColor (don't delete backButtonTextStyle as backarrow falls back to default color on doing that)
+            //(i have no clue why)
+            backButtonTextStyle={{}}
+            backButtonTintColor='#88bfff'              //backArrowColor
+            titleStyle={{
+              color: '#88bfff'                         //title color
+            }}
+            navigationBarStyle={{
+              backgroundColor: '#00232d',           //navbar color
+            }}
+          />
+
+        </Scene>
+      </Router>
+      // <Screeens/>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  scrollContainer:{
-    flex:1,
-    backgroundColor: '#2a8fe7',
-  },
-  chapterContainer:{
-    alignItems: 'center',
-  }
-});
 
-const Screens = StackNavigator({
-  Home: { screen: Home },
-  Deck: { screen: Deck },
-  Word: { screen: Word },
-  DeckComplete: { screen: DeckComplete },
-});
+// const Screens = StackNavigator({
+//   VocabHome: { screen: VocabHome },
+//   Deck: { screen: Deck },
+//   Word: { screen: Word },
+//   DeckComplete: { screen: DeckComplete },
+// });

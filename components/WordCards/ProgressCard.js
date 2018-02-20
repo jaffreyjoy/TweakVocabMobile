@@ -1,3 +1,8 @@
+/**
+  * Author : Jaffrey Joy
+  * Copyright (c) 2018 All Rights Reserved
+**/
+
 import React, { Component } from 'react';
 import {
   StyleSheet,
