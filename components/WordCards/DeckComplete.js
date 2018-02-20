@@ -14,26 +14,14 @@ import {
 
 const width = Dimensions.get('window').width;
 
-export default class DeckComplete extends Component {
+import { Actions } from 'react-native-router-flux';
 
-  static navigationOptions = {
-    title: 'Deck Complete',
-    headerStyle: {
-      backgroundColor: '#00232d',
-    },
-    headerTitleStyle: {
-      color: '#88bfff',
-      fontSize: 20,
-      fontWeight: '200',
-    },
-    headerTintColor: '#88bfff',
-  };
+export default class DeckComplete extends Component {
 
   constructor(props) {
     super(props)
-    const { navigation, unit, chapter, deck } = this.props.navigation.state.params;
+    const { unit, chapter, deck } = this.props;
     this.state = {
-      navigation: navigation,
       unit: unit,
       chapter: chapter,
       deck: deck
@@ -49,8 +37,7 @@ export default class DeckComplete extends Component {
           <Text style={styles.mastered}>MASTERED</Text>
           <Text style={styles.deckNo}>Deck {this.state.deck}</Text>
         <TouchableOpacity onPress={() => {
-          this.props.navigation.navigate('Deck', {
-            navigation: this.state.navigation,
+          Actions.deck({
             unit: this.state.unit,
             chapter: this.state.chapter,
             deck: this.state.deck,

@@ -12,6 +12,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import { Actions } from 'react-native-router-flux';
+
 import EZSwiper from '../node_modules_custom/react-native-ezswiper';
 // import EZSwiper from 'react-native-ezswiper';
 
@@ -30,9 +32,8 @@ export default class Deck extends Component {
 
   constructor(props) {
     super(props)
-    const {navigation, unit ,chapter} = this.props.navigation.state.params;
+    const {unit ,chapter} = this.props;
     this.state = {
-      navigation: navigation,
       unit: unit,
       chapter: chapter,
       // noOfCards: ['', '', ''],
@@ -193,16 +194,14 @@ export default class Deck extends Component {
               console.log("entry exists in deck page");
               console.log("deck completed in deck page");
               //navigate to completed deck page
-              this.props.navigation.navigate('DeckComplete', {
-                navigation: this.state.navigation,
+              Actions.deckComplete({
                 unit: this.state.unit,
                 chapter: this.state.chapter,
                 deck: currentDeck + 1,
               });
             }
             else{
-              this.props.navigation.navigate('Word', {
-                navigation: this.state.navigation,
+              Actions.word({
                 unit: this.state.unit,
                 chapter: this.state.chapter,
                 deck: currentDeck + 1,
@@ -210,9 +209,7 @@ export default class Deck extends Component {
             }
           }
           else{
-
-            this.props.navigation.navigate('Word', {
-              navigation: this.state.navigation,
+            Actions.word({
               unit: this.state.unit,
               chapter: this.state.chapter,
               deck: currentDeck + 1,
@@ -227,18 +224,6 @@ export default class Deck extends Component {
     currentDeck = index;
   }
 
-  static navigationOptions = {
-    title: 'Decks',
-    headerStyle: {
-      backgroundColor: '#00232d',
-    },
-    headerTitleStyle: {
-      color: '#88bfff',
-      fontSize: 20,
-      fontWeight: '200',
-    },
-    headerTintColor: '#88bfff',
-  };
 
   render() {
     return (

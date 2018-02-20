@@ -12,6 +12,8 @@ import {
   TouchableOpacity
 } from 'react-native';
 
+import { Actions } from 'react-native-router-flux';
+
 const width = Dimensions.get('window').width;
 
 export default class ChapterCard extends Component {
@@ -20,11 +22,10 @@ export default class ChapterCard extends Component {
   }
 
   navigateToDeckPage = (chapter) => {
-    this.props.navigation.navigate('Deck', {
-      navigation: this.props.navigation,
+    Actions.deck({
       unit: this.props.data.unit,
       chapter: chapter
-     })
+    });
   }
 
   render() {

@@ -14,6 +14,8 @@ import {
 
 const width = Dimensions.get('window').width;
 
+import { Actions } from 'react-native-router-flux';
+
 import FlipCard from '../../node_modules_custom/react-native-flip-card';
 // import FlipCard from 'react-native-flip-card';
 
@@ -27,25 +29,12 @@ var db = SQLite.openDatabase({ name: 'tweak-datax.db', createFromLocation: '~sto
 
 export default class Word extends Component {
 
-  static navigationOptions = {
-    title: 'Word',
-    headerStyle: {
-      backgroundColor: '#00232d',
-    },
-    headerTitleStyle: {
-      color: '#88bfff',
-      fontSize: 20,
-      fontWeight: '200',
-    },
-    headerTintColor: '#88bfff',
-  };
   constructor(props) {
     super(props)
 
-    const { navigation, unit, chapter, deck } = this.props.navigation.state.params;
+    const { unit, chapter, deck } = this.props;
 
     this.state = {
-      navigation: navigation,
       flip: false,
       wordId: 0,
       // type: 'origin',    //  comment this and uncomment next line to see proper derived word card
@@ -108,8 +97,7 @@ export default class Word extends Component {
               console.log("entry exists");
               console.log("deck completed");
               //navigate to completed deck page
-              this.props.navigation.navigate('DeckComplete', {
-                navigation: this.state.navigation,
+              Actions.deckComplete({
                 unit: this.state.unit,
                 chapter: this.state.chapter,
                 deck: this.state.deck,
@@ -527,8 +515,7 @@ export default class Word extends Component {
                               ],
                                 (tx, updateResult) => {
                                   //navigate to completed deck page
-                                  this.props.navigation.navigate('DeckComplete', {
-                                    navigation: this.state.navigation,
+                                  Actions.deckComplete({
                                     unit: this.state.unit,
                                     chapter: this.state.chapter,
                                     deck: this.state.deck,
@@ -598,8 +585,7 @@ export default class Word extends Component {
               ],
                 (tx, updateResult) => {
                   //navigate to deck mastered page
-                  this.props.navigation.navigate('DeckComplete', {
-                    navigation: this.state.navigation,
+                  Actions.deckComplete({
                     unit: this.state.unit,
                     chapter: this.state.chapter,
                     deck: this.state.deck,
